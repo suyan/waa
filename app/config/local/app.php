@@ -6,5 +6,5 @@ return array(
     'timezone' => 'Asia/Shanghai',
     'locale' => 'zh-CN',
     'upload_dir' => storage_path(). '/upload',
-    'paginate' => 3
+    'paginate' => 10
 );

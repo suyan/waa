@@ -48,6 +48,9 @@ Route::group(array('prefix'=>'admin'), function(){
     Route::get('task', 'AdminTaskController@getWait');
     Route::get('task/run', 'AdminTaskController@getRun');
     Route::get('task/done', 'AdminTaskController@getDone');
+    Route::get('user', 'AdminUserController@getUser');
+    Route::get('role', 'AdminUserController@getRole');
+    Route::get('permission', 'AdminUserController@getPermission');
 });
 
 
