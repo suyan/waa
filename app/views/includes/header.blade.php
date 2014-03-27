@@ -8,7 +8,15 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="/about">@lang('home.logo')</a>
+      @if(Auth::guest())
+        <a class="navbar-brand" href="/about">@lang('home.logo')</a>
+      @else
+        @if(Auth::user()->hasRole('admin'))
+          <a class="navbar-brand" href="/admin">@lang('home.logo')</a>
+        @else
+          <a class="navbar-brand" href="/">@lang('home.logo')</a>
+        @endif
+      @endif
     </div>
     <div class="collapse navbar-collapse">
       <ul class="nav navbar-nav">

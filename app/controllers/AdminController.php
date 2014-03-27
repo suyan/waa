@@ -25,9 +25,9 @@ class AdminController extends BaseController
                 'name' => 'admin.user',
                 'url' => 'admin/user',
                 'class' => ''),
-            'config' => array(
-                'name' => 'admin.config',
-                'url' => 'admin/config',
+            'setting' => array(
+                'name' => 'admin.setting',
+                'url' => 'admin/setting',
                 'class' => '')
         );
     }

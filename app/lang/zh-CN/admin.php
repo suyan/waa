@@ -4,7 +4,8 @@ return array(
     'host'        => '主机管理',
     'task'        => '任务管理',
     'user'        => '用户管理',
-    'config'      => '配置管理',
+    'setting'      => '配置管理',
+    'all_setting' => '全部配置',
     'wait_queue'  => '等待队列',
     'run_queue'   => '正在执行',
     'done_queue'  => '执行完成',
@@ -13,5 +14,8 @@ return array(
     'role_manage' => '角色管理',
     'permission_manage' => '权限管理',
     'name' => '名称',
+    'description' => '描述',
+    'display_name' => '显示名称',
+    'value' => '值',
     'created_at' => '创建时间'
 );

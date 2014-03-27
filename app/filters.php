@@ -1,5 +1,7 @@
 <?php
-App::before(function($request){});
+App::before(function($request){
+    Setting::setAllConfigs();
+});
 App::after(function($request, $response){});
 
 

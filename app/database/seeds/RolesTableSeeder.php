@@ -9,19 +9,19 @@ class RolesTableSeeder extends Seeder {
 	{
 		DB::table('roles')->delete();
 
-        $adminRole = new Role;
-        $adminRole->name = 'admin';
-        $adminRole->save();
+		$adminRole = new Role;
+		$adminRole->name = 'admin';
+		$adminRole->save();
 
-        $userRole = new Role;
-        $userRole->name = 'user';
-        $userRole->save();
+		$userRole = new Role;
+		$userRole->name = 'user';
+		$userRole->save();
 
-        $user = User::where('username','=','admin')->first();
-        $user->attachRole( $adminRole );
+		$user = User::where('username','=','admin')->first();
+		$user->attachRole( $adminRole );
 
-        $user = User::where('username','=','user')->first();
-        $user->attachRole( $userRole );
+		$user = User::where('username','=','user')->first();
+		$user->attachRole( $userRole );
 	}
 
 }

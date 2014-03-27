@@ -51,6 +51,7 @@ Route::group(array('prefix'=>'admin'), function(){
     Route::get('user', 'AdminUserController@getUser');
     Route::get('role', 'AdminUserController@getRole');
     Route::get('permission', 'AdminUserController@getPermission');
+    Route::get('setting', 'AdminSettingController@getSetting');
 });
 
 
