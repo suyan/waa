@@ -3,7 +3,7 @@
 * @Author: Su Yan <http://yansu.org>
 * @Date:   2014-03-23 19:16:00
 * @Last Modified by:   Su Yan
-* @Last Modified time: 2014-03-24 13:14:53
+* @Last Modified time: 2014-03-28 20:18:30
 */
 
 namespace Suyan\Lorg\Core;
@@ -13,6 +13,13 @@ class Helper
 
     public $dnsLookup = false; //开启后减慢速度
     public $dnsCache = null;
+
+    // client 
+    public $allowedClientIdent = array('host', 'session', 'user', 'logname', 'all');
+    public $clientIdent = 'all';
+
+    // session
+    public $sessionIdentifiers = array('SID', 'SESSID', 'PHPSESSID', 'JSESSIONID', 'ASP.NET_SessionId');
     
 
     public function __construct($opts, $log){
@@ -74,6 +81,45 @@ class Helper
             $data[$field['key']] = $matches[$n + 1];
         }
         return $data;
+    }
+
+    static function httpdataToVector($data, $detectMode, $phpids, $quantify, $mcshmm){
+        if (array_key_exists('Request', $data)){
+            if (preg_match("/^(\S+) (.*?) HTTP\/[0-9]\.[0-9]\z/", $data['Request'], $match)){
+                $url_query = parse_url($match[2], PHP_URL_QUERY);
+                if ((!$url_query) and (preg_match('/[^\w!\/~#+-.]/', $match[2])))
+                    $url_query = $match[2];
+                parse_str($url_query, $parameters);
+                $path = parse_url($match[2], PHP_URL_PATH);
+                $argnames = array_keys($parameters);
+            }else{
+                parse_str($data['Request'], $parameters);
+                $path = null; $argnames = null;
+            }
+
+            foreach ($parameters as $key => &$val)
+                if (is_array($val))
+                    $val = Helper::implodeRecursive('', $val);
+
+            $cookie = (array_key_exists('Cookie', $data) and ($data['Cookie'] != '-')) ? $data['Cookie'] : '';
+            $agent = (array_key_exists('User-Agent', $data) and ($data['User-Agent'] != '-')) ? $data['User-Agent'] : '';
+
+            $request = null;
+            
+            if (!$quantify->onlyCheckWebapps or (preg_match("/.*(" . implode('|', $quantify->webAppExtensions) . ")$/", $path)))
+                $request['query'] = !empty($parameters) ? $parameters : null;
+            
+            if ($mcshmm->addVector)
+                foreach ($mcshmm->addVector as $vector)
+                    $request[$vector] = (!empty($$vector)) ? $$vector : null;
+
+            if ($phpids->usePhpidsConverter and isset($request)) 
+                if (in_array('chars', $detectMode) or in_array('mcshmm', $detectMode))
+                    array_walk_recursive($request, array($phpids,'convertUsingPhpids'));
+            
+            return array($request, $path);
+        } else
+            return null;
     }
 
     // function: convert apache format strings to description
@@ -169,6 +215,66 @@ class Helper
             );
     }
 
+    // function: try to retrieve client's identity
+    function clientIdentification($data, $remote_host){
+        $session = ''; 
+        $user = ''; 
+        $logname = '';
+
+        // try to retrieve session id from cookie
+        if (array_key_exists('Cookie', $data)){
+            $entries = preg_split("/;(\ )*/", $data['Cookie']);
+            foreach($entries as $entry){
+                $cookie = explode('=', $entry);
+                if (isset($cookie[1]) and 
+                    (preg_match("/^" . implode('|', $this->sessionIdentifiers) . 
+                        "$/i", $cookie[0])))
+                    $session = "'" . $cookie[1] . "'";
+            }
+        }
+
+        # try to retrieve session id from url query
+        if (empty($session)){
+            $query = explode(" ", parse_url($data['Request'], PHP_URL_QUERY));
+            parse_str($query[0], $query_parsed);
+            foreach ($query_parsed as $parameter => $value)
+                if (preg_match("/^" . implode('|', $this->sessionIdentifiers) . "$/i", $parameter))
+                    $session = $value;
+        }
+
+        # try to retrieve username (%u taken from auth)
+        if (array_key_exists('Remote-User', $data) and ($data['Remote-User'] != '-'))
+            $user = $data['Remote-User'];
+
+        # try to retrieve logname (%l taken from identd)
+        if (array_key_exists('Remote-Logname', $data) and ($data['Remote-Logname'] != '-'))
+            $logname = $data['Remote-Logname'];
+
+        # set ident to address, session, user, logname or all
+        switch ($this->clientIdent){
+            case 'host':
+                $ident = $remote_host;
+                break;
+            case 'session':
+                $ident = empty($session) ? $remote_host : $session;
+                break;
+            case 'user':
+                $ident = empty($user) ? $remote_host : $user;
+                break;
+            case 'logname':
+                $ident = empty($logname) ? $remote_host : $logname;
+                break;
+            case 'all':
+                $ident = $remote_host;
+                $ident .= !empty($session) ? " {" . $session . "}" : '';
+                $ident .= !empty($user) ? " (" . $user . ")" : '';
+                $ident .= !empty($logname) ? " [" . $logname . "]" : '';
+                break;
+        }
+
+        return $ident;
+    }
+
     # function: substitute alphanumeric elements of a string
     static function convertAlphanumeric($str){
         $str_subst = preg_replace('/[\p{L}äöüÄÖÜß]/', 'A', $str); // replace letters a-Z with A
@@ -213,5 +319,10 @@ class Helper
         foreach ($multi_array as $key => $val)
             $str .= is_array($val) ? Helper::implodeRecursive($glue, $val) : $glue . $val;
         return $str;
+    }
+
+    static function isDomainOrIp($str){
+        return (preg_match("/^(?:[-A-Za-z0-9]+\.)+[A-Za-z]{2,6}$/i", $str)
+            || preg_match("/^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\z/", $str));
     }
 }

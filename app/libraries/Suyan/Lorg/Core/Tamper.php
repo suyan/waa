@@ -3,7 +3,7 @@
 * @Author: Su Yan <http://yansu.org>
 * @Date:   2014-03-24 10:38:13
 * @Last Modified by:   Su Yan
-* @Last Modified time: 2014-03-24 10:50:43
+* @Last Modified time: 2014-03-28 19:52:14
 */
 namespace Suyan\Lorg\Core;
 class Tamper
@@ -31,12 +31,10 @@ class Tamper
             $this->currentDate = strtotime(date("r", Helper::apachedateToTimestamp($data['Date'])));
             if ($this->lastDate){
                 $value = $this->currentDate - $this->lastDate;
-                $this->maxDelay = max($value
-                    , (isset($this->maxDelay) ? $this->maxDelay : 0));
-                Helper::onlineVariance($this->avgDelay,
-                    $this->varDelay, $this->indexDelay, $value);
-                $this->lastDate = $this->currentDate;
+                $this->maxDelay = max($value, (isset($this->maxDelay) ? $this->maxDelay : 0));
+                Helper::onlineVariance($this->avgDelay, $this->varDelay, $this->indexDelay, $value);
             }
+            $this->lastDate = $this->currentDate;
         }
     }
 
@@ -50,6 +48,7 @@ class Tamper
     # function: do a naive tamper test based on inter-request time delays
     function tampterTestGrubbs($date){
         $delay = strtotime($date) - strtotime($this->lastDate);
+
         if (($delay == $this->maxDelay) and ($this->indexDelay > 2) and ($this->varDelay != 0)){
             $grubbs = ($delay - $this->avgDelay) / sqrt($this->varDelay);
 
@@ -72,10 +71,11 @@ class Tamper
             $gmdate_string = ((($delay / 60) >= 1) ? 'i \m\i\\n, ' : '') . $gmdate_string;
             $gmdate_string = ((($delay / 3600) >= 1) ? 'H \h\o\u\\r\s, ' : '') . $gmdate_string;
             $gmdate_string = ((($delay / 86400) >= 1) ? 'd \d\a\y\s, ' : '') . $gmdate_string;
+
             if ($grubbs > $critical_value) 
-                $this->log("在".$this->lastDate."可能有篡改: 有".gmdate($gmdate_string, $delay)."无请求");
+                $this->log->log("在".$this->lastDate."可能有篡改: 有".gmdate($gmdate_string, $delay)."无请求");
             else 
-                $this->log('日志没发现篡改');
+                $this->log->log('日志没发现篡改');
         }
     }
 }

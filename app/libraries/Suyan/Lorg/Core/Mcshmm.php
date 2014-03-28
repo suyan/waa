@@ -3,7 +3,7 @@
 * @Author: Su Yan <http://yansu.org>
 * @Date:   2014-03-24 11:00:52
 * @Last Modified by:   Su Yan
-* @Last Modified time: 2014-03-24 12:24:03
+* @Last Modified time: 2014-03-28 17:44:31
 */
 namespace Suyan\Lorg\Core;
 
@@ -90,6 +90,7 @@ class Mcshmm
 
     # function: train dataset for anomaly detection with hidden markov models
     function trainingMcshmm($dataset){
+
         $this->log->log('- 训练mcshmm');
         # set counter for process bar
         $observations = 0;
@@ -99,6 +100,7 @@ class Mcshmm
 
         $add_vector = $this->addVector;
         $add_vector[] = 'query';
+
         foreach ($add_vector as $vector){
             if ($vector == 'query'){
                 
@@ -109,35 +111,34 @@ class Mcshmm
                     foreach($query['parameters'] as $parameter => $training_set){
 
                         $training_set_count = count($training_set);
-
+                        
                         if ($training_set_count >= $this->hmmMinLearn){
+                            
                             $universe = array_unique(call_User_Func_Array('array_merge', $training_set));
 
                             $hmm_ensemble = new Ensemble($universe, $training_set, $path, $parameter, $this->hmmNumModels);
                             $hmm_ensemble->train($training_set, $this->hmmMaxIter, $universe, $this->hmmTolerance);
-                            $this->listOfEnsembles['query'][$path][$parameter] = $hmm_ensemble;
+                            $list_of_ensembles['query'][$path][$parameter] = $hmm_ensemble;
                         }else{
                             $observations = ($training_set_count > $observations) ? $training_set_count : $observations;
+                            // 数据不够，无法训练此条
                         }
                     }
                 }
-                
-                if ($observations < $this->hmmMinLearn){
-                    $this->log->log('  - hmm无法执行，数据不够');
-                }
             }
         }
+        $this->listOfEnsembles = isset($list_of_ensembles) ? $list_of_ensembles : '';
     }
 
     # function: anomaly detection using hidden markov models (testing phase)
-    function detectionMcshmm($path, $request){
+    function detectionMcshmm($path, $request, $dataset){
         if (isset($request['query']) and is_array($request['query'])){
             foreach($request['query'] as $parameter => $value){
                 $value_subst = Helper::convertAlphanumeric($value);
                 $test_set = str_split($value_subst);
                 if (isset($this->listOfEnsembles['query'][$path][$parameter])){
-                    $universe = array_unique(call_User_Func_Array('array_merge', $this->dataset['query'][$path]['parameters'][$parameter]));
-                    $result_mcshmm[] = $this->listOfEnsembles['query'][$path][$parameter]->test($test_set, $universe, $hmm_decrease);
+                    $universe = array_unique(call_User_Func_Array('array_merge', $dataset['query'][$path]['parameters'][$parameter]));
+                    $result_mcshmm[] = $this->listOfEnsembles['query'][$path][$parameter]->test($test_set, $universe, $this->hmmDecrease);
                 }
             }
 

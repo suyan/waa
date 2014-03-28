@@ -3,7 +3,7 @@
 * @Author: Su Yan <http://yansu.org>
 * @Date:   2014-03-24 13:03:25
 * @Last Modified by:   Su Yan
-* @Last Modified time: 2014-03-24 13:10:24
+* @Last Modified time: 2014-03-28 17:03:41
 */
 
 namespace Suyan\Lorg\Core;
@@ -109,6 +109,18 @@ class Anomaly
         }
 
         return($result_length);
+    }
+
+    public function calculateChars(){
+        $this->avgSubst = round($this->avgSubst, 2);
+        $this->varSubst = round(($this->indexSubst > 1) ? 
+            $this->varSubst / ($this->indexSubst-1) : $this->varSubst, 2);
+    }
+
+    public function calculateLength(){
+        $this->avgRequest = round($this->avgRequest, 2);
+        $this->varRequest = round(($this->indexRequest > 1) ? 
+            $this->varRequest / ($this->indexRequest-1) : $this->varRequest, 2);
     }
 
 }

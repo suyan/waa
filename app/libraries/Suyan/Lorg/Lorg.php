@@ -3,7 +3,7 @@
 * @Author: Su Yan <http://yansu.org>
 * @Date:   2014-01-17 22:36:34
 * @Last Modified by:   Su Yan
-* @Last Modified time: 2014-03-24 17:10:48
+* @Last Modified time: 2014-03-28 20:34:21
 */
 namespace Suyan\Lorg;
 class Lorg{
@@ -23,8 +23,7 @@ class Lorg{
         $this->config->init($source);
     }
 
-    function run(){
-
+    public function initHelper(){
         $input_opts = $this->config->get('input');
         $this->input = new Input\Input($input_opts['default']);
         $this->input->init($input_opts[$input_opts['default']]);
@@ -37,6 +36,7 @@ class Lorg{
         $this->log = new Log\Log($log_opts['default']);
         $this->log->init($log_opts[$log_opts['default']]);
 
+        // 初始化需要负责检测的类
         $this->phpids = new Core\PHPIDS($this->config->get('phpids'),$this->log);
         $this->geoip = new Core\Geoip($this->config->get('geoip'),$this->log);
         $this->dnsbl = new Core\Dnsbl($this->config->get('geoip'),$this->log);
@@ -45,7 +45,10 @@ class Lorg{
         $this->mcshmm = new Core\Mcshmm($this->config->get('mcshmm'),$this->log);
         $this->quantify = new Core\Quantify($this->config->get('quantify'),$this->log,$this->geoip);
         $this->anomaly = new Core\Anomaly($this->config->get('anomaly'), $this->log);
+    }
 
+    function run(){
+        $this->initHelper();
         // 开始运行
         $opts = $this->config->get('detect');
         
@@ -77,7 +80,7 @@ class Lorg{
     function logProcess($process){
         $this->log->logProcess($process);
     }
-
+    
     function writeVectors(){
         foreach($this->detect->clients as $client){
             foreach($client->actions as $action){

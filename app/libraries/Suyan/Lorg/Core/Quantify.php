@@ -3,7 +3,7 @@
 * @Author: Su Yan <http://yansu.org>
 * @Date:   2014-03-24 12:22:44
 * @Last Modified by:   Su Yan
-* @Last Modified time: 2014-03-24 13:02:14
+* @Last Modified time: 2014-03-28 20:21:30
 */
 
 namespace Suyan\Lorg\Core;
@@ -12,7 +12,7 @@ class Quantify
 {
     // quantify
     public $quantifyType = array('status', 'bytes', 'replay');
-    public $target = '127.0.0.1';
+    public $target = '';
 
     public $webAppExtensions = 
         array('cgi', 'php[3-5]?', 'phtml', 'pl', 'jsp', 'aspx?', 'cfm', 'exe');
@@ -23,7 +23,6 @@ class Quantify
     public $allowedHttpMethods = 
         array('HEAD', 'GET', 'POST', 'PUT', 'TRACE', 'OPTIONS', 'CONNECT');
     public $maxSessionDuration = 3600;
-    
 
     public $log;
     public $geoip;
@@ -41,11 +40,15 @@ class Quantify
 
         // 检查quantify
         if(in_array('replay', $this->quantifyType)){
-            if (!preg_match("/^https?:\/\//", $this->target))
-                $this->target = 'http://' . $this->target;
-            $body = @file_get_contents( $this->target . '/', false);
-            if ($body === FALSE)
-                $this->log->log('无法链接到目标主机');
+            if(!Helper::isDomainOrIp($this->target)){
+                unset($this->quantifyType[array_search('replay', $this->quantifyType)]);
+            } else {
+                if (!preg_match("/^https?:\/\//", $this->target))
+                    $this->target = 'http://' . $this->target;
+                $body = @file_get_contents( $this->target . '/', false);
+                if ($body === FALSE)
+                    $this->log->log('无法链接到目标主机');    
+            }    
         }
     }
 
