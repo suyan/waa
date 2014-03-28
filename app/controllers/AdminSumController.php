@@ -3,7 +3,7 @@
 * @Author: Su Yan <http://yansu.org>
 * @Date:   2014-03-25 19:36:05
 * @Last Modified by:   Su Yan
-* @Last Modified time: 2014-03-25 20:30:09
+* @Last Modified time: 2014-03-28 11:21:23
 */
 
 class AdminSumController extends AdminController
@@ -22,9 +22,9 @@ class AdminSumController extends AdminController
         $impact = DB::table('hosts')->remember(10)->sum('impact_count');
         return View::make('admin.sum.sum')
             ->with('title', Lang::get('admin.home'))
-            ->with('site', $site)
-            ->with('log', $log)
-            ->with('attack', $attack)
-            ->with('impact', $impact);
+            ->with('site', $site ? $site : 0)
+            ->with('log', $log ? $log : 0)
+            ->with('attack', $attack ? $attack : 0)
+            ->with('impact', $impact ? $impack : 0);
     }
 }

@@ -3,7 +3,7 @@
 * @Author: Su Yan <http://yansu.org>
 * @Date:   2014-03-25 19:36:05
 * @Last Modified by:   Su Yan
-* @Last Modified time: 2014-03-26 10:36:47
+* @Last Modified time: 2014-03-28 11:21:44
 */
 
 class UserSumController extends HomeController
@@ -23,9 +23,9 @@ class UserSumController extends HomeController
         $impact = DB::table('hosts')->where('user_id',$user_id)->sum('impact_count');
         return View::make('user.sum.sum')
             ->with('title', Lang::get('home.home'))
-            ->with('site', $site)
-            ->with('log', $log)
-            ->with('attack', $attack)
-            ->with('impact', $impact);
+            ->with('site', $site ? $site : 0)
+            ->with('log', $log ? $log : 0)
+            ->with('attack', $attack ? $attack : 0)
+            ->with('impact', $impact ? $impack : 0);
     }
 }

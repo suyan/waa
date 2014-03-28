@@ -8,7 +8,7 @@ class WaaController extends BaseController
         $this->topNav = array(
             'home'  => array(
                 'name' => 'home.home', 
-                'url' => '/', 
+                'url' => 'about', 
                 'class' => ''),
             // 'about' => array(
             //     'name' => 'home.about', 
@@ -25,6 +25,5 @@ class WaaController extends BaseController
     }
 
     public function getDemo(){
-        var_dump(Carbon::now());
     }
 }

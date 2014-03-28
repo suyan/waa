@@ -3,7 +3,7 @@
 * @Author: Su Yan <http://yansu.org>
 * @Date:   2014-03-25 20:14:35
 * @Last Modified by:   Su Yan
-* @Last Modified time: 2014-03-25 21:46:18
+* @Last Modified time: 2014-03-28 10:26:13
 */
 class AdminTaskController extends AdminController
 {
@@ -37,7 +37,7 @@ class AdminTaskController extends AdminController
 
     public function getWait(){
         $this->leftNav['wait']['class'] = 'active';
-        $hosts = Host::where('status',1)->paginate(Config::get('app.paginate'));
+        $hosts = Host::where('status',1)->paginate(Config::get('waa.paginate'));
         return View::make('admin.task.wait')
             ->with('title', Lang::get('admin.wait_queue'))
             ->with('leftNav', $this->leftNav)
@@ -46,7 +46,7 @@ class AdminTaskController extends AdminController
 
     public function getRun(){
         $this->leftNav['run']['class'] = 'active';
-        $hosts = Host::where('status',2)->paginate(Config::get('app.paginate'));
+        $hosts = Host::where('status',2)->paginate(Config::get('waa.paginate'));
         return View::make('admin.task.run')
             ->with('title', Lang::get('admin.run_queue'))
             ->with('leftNav', $this->leftNav)
@@ -55,7 +55,7 @@ class AdminTaskController extends AdminController
 
     public function getDone(){
         $this->leftNav['done']['class'] = 'active';
-        $hosts = Host::where('status',3)->paginate(Config::get('app.paginate'));
+        $hosts = Host::where('status',3)->paginate(Config::get('waa.paginate'));
         return View::make('admin.task.done')
             ->with('title', Lang::get('admin.done_queue'))
             ->with('leftNav', $this->leftNav)

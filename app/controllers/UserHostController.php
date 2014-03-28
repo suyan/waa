@@ -3,7 +3,7 @@
  * @Author: Su Yan <http://yansu.org>
  * @Date:   2014-03-18 11:04:30
  * @Last Modified by:   Su Yan
- * @Last Modified time: 2014-03-26 10:52:29
+ * @Last Modified time: 2014-03-28 10:26:50
 */
 
 class UserHostController extends HomeController
@@ -31,7 +31,7 @@ class UserHostController extends HomeController
     {
         $this->leftNav['host']['class'] = 'active';
         
-        $hosts = Host::where('user_id', Auth::user()->id)->paginate(Config::get('app.paginate'));
+        $hosts = Host::where('user_id', Auth::user()->id)->paginate(Config::get('waa.paginate'));
 
         return View::make('user.host.host')
             ->with('leftNav', $this->leftNav)
@@ -68,7 +68,7 @@ class UserHostController extends HomeController
         $host->file_name = md5(uniqid('', true));
         $host->file_size = $file->getSize();
         $host->file_md5 = md5_file($file->getRealPath());
-        $file->move(Config::get('app.upload_dir') , $host->file_name);
+        $file->move(Config::get('waa.upload_dir') , $host->file_name);
         $host->user_id = Auth::user()->id;
         $host->save();
         
@@ -97,7 +97,7 @@ class UserHostController extends HomeController
                 ->with('error', $error);
         } else {
             //删除主机，并且删除文件
-            File::delete(Config::get('app.upload_dir').'/'.$host->file_name);
+            File::delete(Config::get('waa.upload_dir').'/'.$host->file_name);
             DB::table('vectors')->where('host_id',$host->id)->delete();
             $host->delete();
             return Redirect::to('host/host');

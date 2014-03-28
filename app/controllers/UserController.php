@@ -7,23 +7,31 @@ class UserController extends BaseController {
         $this->topNav = array(
             'home'  => array(
                 'name' => 'home.home', 
-                'url' => '/', 
-                'class' => ''),
-            'about' => array(
-                'name' => 'home.about', 
                 'url' => 'about', 
                 'class' => ''),
+            // 'about' => array(
+            //     'name' => 'home.about', 
+            //     'url' => 'about', 
+            //     'class' => ''),
         );
-        $this->topNav['about']['class'] = 'active';
+        $this->topNav['home']['class'] = 'active';
         View::share('topNav', $this->topNav);
     }
 
     public function getCreate(){
-        return View::make('pages.create')
-            ->with('title',Lang::get('user.sign_up'));
+        if(!Config::get('waa.can_sign_up', false))
+            return Redirect::to('user/login')
+                ->with('error', Lang::get('home.register_invalid'));
+        else 
+            return View::make('pages.create')
+                ->with('title',Lang::get('user.sign_up'));
     }
 
     public function postCreate(){
+        if(!Config::get('waa.can_sign_up', false))
+            return Redirect::to('user/login')
+                ->with('error', Lang::get('home.register_invalid'));
+
         $user = new User;
         $user->username = Input::get( 'username' );
         $user->email    = Input::get( 'email' );
@@ -93,7 +101,7 @@ class UserController extends BaseController {
 
     public function getLogout(){
         Confide::logout();
-        return Redirect::to('/');
+        return Redirect::to('about');
     }
 
 /*

@@ -3,7 +3,7 @@
 * @Author: Su Yan <http://yansu.org>
 * @Date:   2014-03-25 19:36:05
 * @Last Modified by:   Su Yan
-* @Last Modified time: 2014-03-27 15:35:50
+* @Last Modified time: 2014-03-28 10:26:10
 */
 
 class AdminUserController extends AdminController
@@ -35,7 +35,7 @@ class AdminUserController extends AdminController
 
     public function getUser(){
         $this->leftNav['user']['class'] = 'active';
-        $users = User::paginate(Config::get('app.paginate'));
+        $users = User::paginate(Config::get('waa.paginate'));
         return View::make('admin.user.user')
             ->with('title', Lang::get('admin.user'))
             ->with('leftNav', $this->leftNav)
@@ -44,7 +44,7 @@ class AdminUserController extends AdminController
 
     public function getRole(){
         $this->leftNav['role']['class'] = 'active';
-        $roles = Role::paginate(Config::get('app.paginate'));
+        $roles = Role::paginate(Config::get('waa.paginate'));
         return View::make('admin.user.role')
             ->with('title', Lang::get('admin.role_manage'))
             ->with('leftNav', $this->leftNav)
@@ -53,7 +53,7 @@ class AdminUserController extends AdminController
 
     public function getPermission(){
         $this->leftNav['permission']['class'] = 'active';
-        $permissions = Permission::paginate(Config::get('app.paginate'));
+        $permissions = Permission::paginate(Config::get('waa.paginate'));
         return View::make('admin.user.permission')
             ->with('title', Lang::get('admin.permission_manage'))
             ->with('leftNav', $this->leftNav)

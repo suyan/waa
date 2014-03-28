@@ -11,7 +11,8 @@
         "ezyang/htmlpurifier": "dev-master",
         "zizaco/confide": "3.2.x",
         "laravelbook/ardent": "dev-master",
-        "zizaco/entrust": "dev-master"
+        "zizaco/entrust": "dev-master",
+        "indigophp/supervisor": "dev-master"
 	},
 	"autoload": {
 		"classmap": [

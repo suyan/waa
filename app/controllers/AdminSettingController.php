@@ -3,7 +3,7 @@
 * @Author: Su Yan <http://yansu.org>
 * @Date:   2014-03-25 20:14:35
 * @Last Modified by:   Su Yan
-* @Last Modified time: 2014-03-27 16:37:46
+* @Last Modified time: 2014-03-28 10:26:17
 */
 class AdminSettingController extends AdminController
 {
@@ -29,7 +29,7 @@ class AdminSettingController extends AdminController
     public function getSetting(){
         $this->leftNav['setting']['class'] = 'active';
 
-        $settings = Setting::paginate(Config::get('app.paginate'));
+        $settings = Setting::paginate(Config::get('waa.paginate'));
 
         return View::make('admin.setting.setting')
             ->with('title', Lang::get('admin.setting'))

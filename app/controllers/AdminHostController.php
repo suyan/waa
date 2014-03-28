@@ -3,7 +3,7 @@
 * @Author: Su Yan <http://yansu.org>
 * @Date:   2014-03-25 20:14:35
 * @Last Modified by:   Su Yan
-* @Last Modified time: 2014-03-26 10:48:44
+* @Last Modified time: 2014-03-28 10:25:09
 */
 class AdminHostController extends AdminController
 {
@@ -29,7 +29,7 @@ class AdminHostController extends AdminController
     public function getHost(){
         $this->leftNav['host']['class'] = 'active';
 
-        $hosts = Host::paginate(Config::get('app.paginate'));
+        $hosts = Host::paginate(Config::get('waa.paginate'));
         return View::make('admin.host.host')
             ->with('title', Lang::get('admin.host'))
             ->with('leftNav', $this->leftNav)
@@ -50,7 +50,7 @@ class AdminHostController extends AdminController
     {
         $host = Host::find($host);
         //删除主机，并且删除文件
-        File::delete(Config::get('app.upload_dir').'/'.$host->file_name);
+        File::delete(Config::get('waa.upload_dir').'/'.$host->file_name);
         DB::table('vectors')->where('host_id',$host->id)->delete();
         $host->delete();
         return Redirect::to('admin/host');
