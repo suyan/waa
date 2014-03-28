@@ -15,6 +15,10 @@
   ],
   "dependencies": {
     "bootstrap": "~3.1.1",
-    "jquery": "~2.1.0"
+    "jquery": "~2.1.0",
+    "bootstrapValidator": "~0.3.3",
+    "bower-jvectormap": "~1.2.2",
+    "font-awesome": "~4.0.3",
+    "webuploader": "~0.1.0"
   }
 }
