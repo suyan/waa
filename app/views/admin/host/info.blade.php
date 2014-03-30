@@ -8,7 +8,7 @@
 <div class="row">
   <h3>@lang('host.detail')</h3>
   <ul class="nav nav-tabs">
-    <li class="active"><a href="{{ URL::to('admin/host/'.$host->id.'/info') }}">基本信息</a></li>
+    <li class="active"><a>基本信息</a></li>
     <li><a href="{{ URL::to('admin/host/'.$host->id.'/vector') }}">攻击向量</a></li>
   </ul>
   <br>
@@ -93,28 +93,6 @@
       
     </div>    
   </div>
-  <!-- 攻击数据 -->
-  <!-- <div class="col-md-12">
-    <div class="panel panel-default">
-      <div class="panel-heading">
-        <h3 class="panel-title">@lang('host.info')</h3>
-      </div>
-      <table class="table table-bordered table-hover">
-        <thead>
-          <tr>
-            <th>test</th>
-            <th>test</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>aaa</td>
-            <td>aaa</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </div> -->
 </div>
 
 @stop

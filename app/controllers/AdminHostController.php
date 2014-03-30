@@ -3,7 +3,7 @@
 * @Author: Su Yan <http://yansu.org>
 * @Date:   2014-03-25 20:14:35
 * @Last Modified by:   Su Yan
-* @Last Modified time: 2014-03-29 20:49:46
+* @Last Modified time: 2014-03-30 15:26:19
 */
 class AdminHostController extends AdminController
 {
@@ -54,7 +54,6 @@ class AdminHostController extends AdminController
         DB::table('vectors')->where('host_id',$host->id)->delete();
         $host->delete();
         return Redirect::to('admin/host');
-
     }
 
     public function getRun($host)
@@ -157,6 +156,19 @@ class AdminHostController extends AdminController
             ->with('countryImpactCount', json_encode($country_impact_count))
             ->with('countryAttackCount', json_encode($country_attack_count))
             ->with('clientImpactRate', json_encode($clientImpactRate));
-        
+    }
+
+    public function getVector($host){
+        $this->leftNav['host']['class'] = 'active';
+
+        $vectors = Vector::where('host_id',$host)
+            ->orderBy('impact', 'desc')
+            ->paginate(Config::get('waa.paginate'));
+
+        return View::make('admin.host.vector')
+            ->with('title', Lang::get('admin.host'))
+            ->with('leftNav', $this->leftNav)
+            ->with('hostId', $host)
+            ->with('vectors', $vectors);
     }
 }

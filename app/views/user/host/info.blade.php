@@ -7,7 +7,11 @@
 @section('body')
 <div class="row">
   <h3>@lang('host.detail')</h3>
-  <hr>
+  <ul class="nav nav-tabs">
+    <li class="active"><a href="{{ URL::to('host/'.$host->id.'/info') }}">基本信息</a></li>
+    <li><a href="{{ URL::to('host/'.$host->id.'/vector') }}">攻击向量</a></li>
+  </ul>
+  <br>
   <div class="col-md-6">
     <div class="panel panel-default">
       <div class="panel-heading">

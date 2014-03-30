@@ -3,7 +3,7 @@
 * @Author: Su Yan <http://yansu.org>
 * @Date:   2014-01-18 14:05:30
 * @Last Modified by:   Su Yan
-* @Last Modified time: 2014-03-28 20:58:44
+* @Last Modified time: 2014-03-30 15:52:50
 */
 namespace Suyan\Lorg;
 use GeoIp2;
@@ -21,6 +21,7 @@ class Detect{
 
     public $dataset = array();
     public $clients = array();
+    public $actions = array();
 
     // log
     public $lineCount = 0;
@@ -226,6 +227,7 @@ class Detect{
                 }
             }
         }
+
     }
 
     function doSummarize($data, $request, $path){
@@ -332,10 +334,10 @@ class Detect{
                 $request = $vector[0];
                 $path = $vector[1];
 
-                //篡改检测
-                if($this->main->tamper->tamperTest){
-                    if (array_key_exists('Date', $data))
+                if (array_key_exists('Date', $data))
                         $date = $data['Date'] = date("r", Core\Helper::apachedateToTimestamp($data['Date']));
+                //篡改检测
+                if($this->main->tamper->tamperTest){    
                     if (isset($this->main->tamper->lastDate))
                         $this->main->tamper->tampterTestGrubbs($date);
                     $this->main->tamper->lastDate = $date;    
@@ -363,6 +365,7 @@ class Detect{
                 $vector = Core\Helper::httpdataToVector($data, $this->detectMode, $this->main->phpids, $this->main->quantify, $this->main->mcshmm);
                 $request = $vector[0];
                 $path = $vector[1];
+
                 if (isset($data)){
                     $this->doSummarize($data, $request, $path);
                 }

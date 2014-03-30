@@ -1,4 +1,7 @@
 <?php
+use Indigo\Supervisor\Supervisor;
+use Indigo\Supervisor\Process;
+use Indigo\Supervisor\Connector;
 class WaaController extends BaseController
 {
     
@@ -25,5 +28,15 @@ class WaaController extends BaseController
     }
 
     public function getDemo(){
+        // $connector = new Connector\InetConnector(
+        //     Config::get('waa.supervisor_host'), 
+        //     Config::get('waa.supervisor_port')
+        //     );
+        // $connector->setCredentials(
+        //     Config::get('waa.supervisor_name'),
+        //     Config::get('waa.supervisor_password'));
+        // $supervisor = new Supervisor($connector);
+        // $process = $supervisor->getProcess('waaQueue:waaQueue_0');
+        // var_dump($process);
     }
 }

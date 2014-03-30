@@ -37,6 +37,12 @@
             {{ Session::get('error') }}
           </div>
         @endif
+        @if (Session::get('info'))
+          <div class="alert alert-info fade in">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+            {{ Session::get('info') }}
+          </div>
+        @endif
         @yield('body')
       </div>
     </div>

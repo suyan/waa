@@ -22,7 +22,6 @@
 			"app/database/migrations",
 			"app/database/seeds",
 			"app/tests/TestCase.php",
-			"app/queues",
 			"app/libraries"
 		],
 		"psr-4": {

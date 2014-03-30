@@ -33,15 +33,20 @@ class CreateHostsTable extends Migration {
         });
 
         // 打开处理进程
-        // $connector = new Connector\InetConnector(
-        //     Config::get('waa.supervisor_host'), 
-        //     Config::get('waa.supervisor_port')
-        //     );
-        // $connector->setCredentials(
-        //     Config::get('waa.supervisor_name'),
-        //     Config::get('waa.supervisor_password'));
-        // $supervisor = new Supervisor($connector);
-        // $supervisor->startAllProcesses(); 
+        $connector = new Connector\InetConnector(
+            Config::get('waa.supervisor_host'), 
+            Config::get('waa.supervisor_port')
+            );
+        $connector->setCredentials(
+            Config::get('waa.supervisor_name'),
+            Config::get('waa.supervisor_password'));
+        $supervisor = new Supervisor($connector);
+        try{
+            $supervisor->startAllProcesses(false);     
+        } catch (Exception $e){
+            Log::error($e);
+        }
+        
     }
 
     public function down()
@@ -49,20 +54,25 @@ class CreateHostsTable extends Migration {
         $hosts = DB::table('hosts')->get();
         
         // 关闭处理进程
-        // $connector = new Connector\InetConnector(
-        //     Config::get('waa.supervisor_host'), 
-        //     Config::get('waa.supervisor_port')
-        //     );
-        // $connector->setCredentials(
-        //     Config::get('waa.supervisor_name'),
-        //     Config::get('waa.supervisor_password')
-        //     );
-        // $supervisor = new Supervisor($connector);
-        // $supervisor->stopProcessGroup('waaQueue'); 
-
+        $connector = new Connector\InetConnector(
+            Config::get('waa.supervisor_host'), 
+            Config::get('waa.supervisor_port')
+            );
+        $connector->setCredentials(
+            Config::get('waa.supervisor_name'),
+            Config::get('waa.supervisor_password')
+            );
+        $supervisor = new Supervisor($connector);
+        try{
+            $supervisor->stopProcessGroup('waaQueue',false);      
+        } catch (Exception $e){
+            Log::error($e);
+        }
+        
+        // 清空队列
+        $redis = Redis::connection();
+        $redis->flushdb();
         foreach($hosts as $host) {
-            //清空队列
-            Queue::pop(Config::get('queue.connections.redis.queue'));
             File::delete(Config::get('waa.upload_dir').'/'.$host->file_name);
         }
         Schema::drop('hosts');

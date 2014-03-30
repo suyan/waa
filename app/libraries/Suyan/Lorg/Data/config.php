@@ -33,7 +33,6 @@ return array(
     'geoip' => array(
         'geoipFile' => app_path().'/libraries/Suyan/Lorg/Data/GeoLite2-City.mmdb',
         'geoipLookup' => true, // 如果geoip开启检测的话，这个必须设定为true
-        // 'lofMinLearn' => 1, //测试用
         ),
     'helper' => array(
         // 'dnsLookup' => true, // 将ip转为domain
@@ -43,7 +42,6 @@ return array(
         'tamperTest' => false
         ),
     'mcshmm' => array(
-        // 'hmmMinLearn' => 1, // 测试用
         'addVector' => array(
             // 'path', 
             // 'argnames', 

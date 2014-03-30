@@ -45,9 +45,19 @@ Route::group(array('prefix'=>'admin'), function(){
     Route::get('host/{host}/run', 'AdminHostController@getRun');
     Route::post('host/{host}/run', 'AdminHostController@postRun');
     Route::get('host/{host}/info', 'AdminHostController@getInfo');
-    Route::get('task', 'AdminTaskController@getWait');
+    Route::get('host/{host}/vector', 'AdminHostController@getVector');
+
+
+    Route::get('task', 'AdminTaskController@getProcess');
+    Route::get('task/wait', 'AdminTaskController@getWait');
     Route::get('task/run', 'AdminTaskController@getRun');
     Route::get('task/done', 'AdminTaskController@getDone');
+    Route::get('task/process', 'AdminTaskController@getProcess');
+    Route::get('task/{process}/start', 'AdminTaskController@getProcessStart');
+    Route::post('task/{process}/start', 'AdminTaskController@postProcessStart');
+    Route::get('task/{process}/stop', 'AdminTaskController@getProcessStop');
+    Route::post('task/{process}/stop', 'AdminTaskController@postProcessStop');
+
     Route::get('user', 'AdminUserController@getUser');
     Route::get('role', 'AdminUserController@getRole');
     Route::get('permission', 'AdminUserController@getPermission');
