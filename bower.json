@@ -19,6 +19,8 @@
     "bootstrapValidator": "~0.3.3",
     "bower-jvectormap": "~1.2.2",
     "font-awesome": "~4.0.3",
-    "webuploader": "~0.1.0"
+    "webuploader": "~0.1.0",
+    "listjs": "~1.1.1",
+    "highcharts": "https://github.com/highslide-software/highcharts.com/archive/v3.0.9.zip"
   }
 }

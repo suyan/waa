@@ -28,7 +28,7 @@ return array(
     'waiting'        => '等待中',
     'log'            => '日志',
     'process'        => '进度',
-    'detail'         => '服务器详情',
+    'detail'         => '主机详情',
     'create_time'    => '创建时间',
     'host_info'      => '主机信息',
     'attack_info'    => '分析结果',

@@ -61,10 +61,21 @@
         </tr>
         <tr>
           <td>@lang('host.end_time')</td>
-          <td>{{ $host->end_time }}%</td>
+          <td>{{ $host->end_time }}</td>
         </tr>
       </table>
     </div>
+  </div>
+  <!-- clients攻击图 -->
+  <div class="col-md-12">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title">@lang('host.info')</h3>
+      </div>
+      <div class="panel-body">
+        <div id="chart"  style="width: 100%; height: 400px;"></div>
+      </div>
+    </div>    
   </div>
   <div class="col-md-12">
     <div class="panel panel-default">
@@ -82,45 +93,83 @@
 @section('js')
 {{ HTML::script('assets/js/map.js') }}
 <script type="text/javascript">
-  $(function(){
-    // 每个国家的数据
-    var countryAttackCount = {{ $countryAttackCount }};
-    var cityAttackData = {{ $cityAttackData }};
-    var cityAttackLocation = {{ $cityAttackLocation }};
-    $('#world-map-gdp').vectorMap({
-      map: 'world_mill_en',
-      series: {
-        regions: [{
-          values: countryAttackCount,
-          scale: ['#C8EEFF', '#0071A4'],
-          normalizeFunction: 'polynomial'
-        }],
-        markers: [{
-          attribute: 'fill',
-          scale: ['#FEE5D9', '#A50F15'],
-          values: cityAttackData
-        },{
-          attribute: 'r',
-          scale: [5, 15],
-          values: cityAttackData
-        }],
-      },
-      markerStyle: {initial: {fill: '#F8E23B',stroke: '#383f47'}},
-      backgroundColor: '#383f47',
-      markers: cityAttackLocation,
-      onMarkerLabelShow: function(event, label, index){
-        label.html(
-          ''+cityAttackLocation[index].name+'<br>'+
-          '攻击影响力: '+cityAttackData[index]
-        );
-      },
-      onRegionLabelShow: function(event, label, code){
-        label.html(
-          ''+label.html()+'<br>'+
-          '攻击影响力: '+countryAttackCount[code]
-        );
-      }
-    });
+$(function(){
+  // 每个国家的数据
+  var countryImpactCount = {{ $countryImpactCount }};
+  var countryAttackCount = {{ $countryAttackCount }};
+  var cityAttackData = {{ $cityAttackData }};
+  var cityAttackLocation = {{ $cityAttackLocation }};
+  $('#world-map-gdp').vectorMap({
+    map: 'world_mill_en',
+    series: {
+      regions: [{
+        values: countryImpactCount,
+        scale: ['#C8EEFF', '#0071A4'],
+        normalizeFunction: 'polynomial'
+      }],
+      markers: [{
+        attribute: 'fill',
+        scale: ['#FEE5D9', '#A50F15'],
+        values: cityAttackData
+      },{
+        attribute: 'r',
+        scale: [5, 15],
+        values: cityAttackData
+      }],
+    },
+    markerStyle: {initial: {fill: '#F8E23B',stroke: '#383f47'}},
+    backgroundColor: '#383f47',
+    markers: cityAttackLocation,
+    onMarkerLabelShow: function(event, label, index){
+      label.html(
+        ''+cityAttackLocation[index].name+'<br>'+
+        '攻击影响力: '+cityAttackData[index]+'<br>'+
+      );
+    },
+    onRegionLabelShow: function(event, label, code){
+      label.html(
+        ''+label.html()+'<br>'+
+        '攻击影响力: '+countryImpactCount[code]+'<br>'+
+        '攻击总数: ' +countryAttackCount[code]
+      );
+    }
   });
+});
+</script>
+{{ HTML::script('assets/js/chart.js') }}
+<script>
+$(function () {
+  $('#chart').highcharts({
+    chart: {
+      plotBackgroundColor: null,
+      plotBorderWidth: null,
+      plotShadow: false
+    },
+    title: {
+      text: '攻击影响力比重图'
+    },
+    tooltip: {
+      pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+    },
+    plotOptions: {
+      pie: {
+        allowPointSelect: true,
+        cursor: 'pointer',
+        dataLabels: {
+          enabled: true,
+          color: '#000000',
+          connectorColor: '#000000',
+          format: '<b>{point.name}</b>: {point.percentage:.1f} %'
+        },
+        showInLegend: true
+      }
+    },
+    series: [{
+      type: 'pie',
+      name: '攻击影响比重',
+      data: {{ $clientImpactRate }}
+    }]
+  });
+});
 </script>
 @stop

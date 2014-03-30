@@ -3,7 +3,7 @@
 * @Author: Su Yan <http://yansu.org>
 * @Date:   2014-01-18 14:05:30
 * @Last Modified by:   Su Yan
-* @Last Modified time: 2014-03-28 20:39:17
+* @Last Modified time: 2014-03-28 20:58:44
 */
 namespace Suyan\Lorg;
 use GeoIp2;
@@ -354,6 +354,7 @@ class Detect{
     public function postProcessing(){
         $this->main->log('信息汇总');
         $this->main->resetInput();
+        $this->lineIndex = 0;
         while($line = $this->main->getLine()){
             trim($line);
             $data = Core\Helper::loglineToHttpdata($line,$this->regex);

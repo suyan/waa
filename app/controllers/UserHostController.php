@@ -3,7 +3,7 @@
  * @Author: Su Yan <http://yansu.org>
  * @Date:   2014-03-18 11:04:30
  * @Last Modified by:   Su Yan
- * @Last Modified time: 2014-03-28 10:26:50
+ * @Last Modified time: 2014-03-29 20:51:23
 */
 
 class UserHostController extends HomeController
@@ -147,39 +147,81 @@ class UserHostController extends HomeController
         } else {
             $vectors = DB::table('vectors')->where('host_id', $host->id)->get();
 
-            $locations = array();
-            $country = array();
+            //构造geoip图所需变量
+            
+            // 根据client将攻击分组
+            $clients = array(); // 地点信息
+            $country_impact_count = array(); // 国家影响
+            $country_attack_count = array(); // 国家攻击总数
+            $clients_attack_count = 0; // client总数
+            $countries_attack_count = 0;
 
             foreach($vectors as $vector){
-                if(isset($locations[$vector->client])){
-                    $locations[$vector->client]['latLng'] = $vector->location;
-                    $locations[$vector->client]['impact'] += $vector->impact;
+                if(isset($clients[$vector->client])){
+                    $clients[$vector->client]['latLng'] = $vector->location;
+                    $clients[$vector->client]['impact_count'] += $vector->impact;
+                    $clients[$vector->client]['request_count'] += 1;
+                    if($vector->impact > 10){
+                        $clients[$vector->client]['attack_count'] += 1;
+                        $clients_attack_count += 1;
+                    }
                 }else{
-                    $locations[$vector->client]['latLng'] = $vector->location;
-                    $locations[$vector->client]['impact'] = 0 + $vector->impact;
+                    $clients[$vector->client]['latLng'] = $vector->location;
+                    $clients[$vector->client]['impact_count'] = 0 + $vector->impact;
+                    $clients[$vector->client]['request_count'] = 1;
+                    if($vector->impact > 10){
+                        $clients[$vector->client]['attack_count'] = 1;
+                        $clients_attack_count += 1;
+                    } else 
+                        $clients[$vector->client]['attack_count'] = 0;
                 }
-                if(isset($country[$vector->remote_code]))
-                    $country[$vector->remote_code] += $vector->impact;
-                else
-                    $country[$vector->remote_code] = 0 + $vector->impact;
+                if(isset($country_impact_count[$vector->remote_code])){
+                    $country_impact_count[$vector->remote_code] += $vector->impact;
+                    if($vector->impact > 10){
+                        $country_attack_count[$vector->remote_code] += 1;
+                        $countries_attack_count += 1;
+                    }
+                } else {
+                    $country_impact_count[$vector->remote_code] = 0 + $vector->impact;
+                    if($vector->impact > 10){
+                        $country_attack_count[$vector->remote_code] = 1;
+                        $countries_attack_count += 1;
+                    } else 
+                        $country_attack_count[$vector->remote_code] = 0;
+                }
             }
 
-            $countryAttackCount = array();
+            $countryImpactCount = array();
             $cityAttackLocation = array();
-            foreach($locations as $key => $location){
-                $cityAttackData[] = $location['impact'];  
+            $clientImpactRate = array();
+            foreach($clients as $key => $client){
+                $cityAttackData[] = $client['impact_count'];  
                 $cityAttackLocation[] = array(
-                    'latLng' => explode(',', $location['latLng']),
+                    'latLng' => explode(',', $client['latLng']),
                     'name' => $key);
+                $clientImpactRate[] = array($key, 
+                    ceil($client['impact_count']*100/$host->impact_count));
             }
 
-            return View::make('user.host.info')
+            //饼状图只留前4个+others
+            if (count($clientImpactRate) > 5) {
+                $clientImpactRate = array_slice($clientImpactRate, 0, 4);
+                $sum = $clientImpactRate[0][1] + $clientImpactRate[1][1] +
+                    $clientImpactRate[2][1] + $clientImpactRate[3][1];
+                $clientImpactRate[] = array('others', 100 - $sum);
+            }
+
+
+            return View::make('admin.host.info')
                 ->with('host', $host)
-                ->with('leftNav', $this->leftNav)
                 ->with('title', Lang::get('host.info'))
+                ->with('leftNav', $this->leftNav)
+                ->with('vectors', $vectors)
                 ->with('cityAttackData', json_encode($cityAttackData))
                 ->with('cityAttackLocation', json_encode($cityAttackLocation))
-                ->with('countryAttackCount', json_encode($country));
+                ->with('countryImpactCount', json_encode($country_impact_count))
+                ->with('countryAttackCount', json_encode($country_attack_count))
+                ->with('clientImpactRate', json_encode($clientImpactRate));
             
         }
     }

@@ -3,7 +3,7 @@
 * @Author: Su Yan <http://yansu.org>
 * @Date:   2014-03-25 19:36:05
 * @Last Modified by:   Su Yan
-* @Last Modified time: 2014-03-28 11:21:44
+* @Last Modified time: 2014-03-29 15:13:33
 */
 
 class UserSumController extends HomeController
@@ -26,6 +26,6 @@ class UserSumController extends HomeController
             ->with('site', $site ? $site : 0)
             ->with('log', $log ? $log : 0)
             ->with('attack', $attack ? $attack : 0)
-            ->with('impact', $impact ? $impack : 0);
+            ->with('impact', $impact ? $impact : 0);
     }
 }

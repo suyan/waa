@@ -3,7 +3,7 @@
 * @Author: Su Yan <http://yansu.org>
 * @Date:   2014-03-22 20:46:13
 * @Last Modified by:   Su Yan
-* @Last Modified time: 2014-03-24 17:12:15
+* @Last Modified time: 2014-03-28 20:47:41
 */
 namespace Suyan\Lorg\Log;
 class TerminalLog implements LogInterface
@@ -22,6 +22,6 @@ class TerminalLog implements LogInterface
     }
 
     public function logProcess($process){
-        echo $process, "\n";
+        echo $process, "\r";
     }
 }

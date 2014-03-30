@@ -15,6 +15,9 @@ module.exports = function(grunt) {
           './public/assets/js/map.js': [
             './public/packages/bower/bower-jvectormap/jquery-jvectormap-1.2.2.min.js',
             './public/packages/bower/bower-jvectormap/jquery-jvectormap-world-mill-en.js'
+          ],
+          './public/assets/js/chart.js': [
+            './public/packages/bower/highcharts/js/highcharts.src.js'
           ]
         }
       },
@@ -41,7 +44,8 @@ module.exports = function(grunt) {
         files: {
           './public/assets/js/app.js': './public/assets/js/app.js',
           './public/assets/js/validate.js': './public/assets/js/validate.js',
-          './public/assets/js/map.js': './public/assets/js/map.js'
+          './public/assets/js/map.js': './public/assets/js/map.js',
+          './public/assets/js/chart.js': './public/assets/js/chart.js'
         }
       },
     },
