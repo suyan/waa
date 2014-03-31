@@ -14,5 +14,7 @@ return array(
     'register_invalid' => '还未开放注册',
     'about'            => '关于',
     'activity'         => '我的动态',
-    'all_activity'     => '全部动态'
+    'all_activity'     => '全部动态',
+    'user_home' => '用户首页',
+    'admin_home' => '管理员首页'
 );

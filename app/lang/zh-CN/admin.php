@@ -4,8 +4,6 @@ return array(
     'host'              => '主机管理',
     'task'              => '任务管理',
     'user'              => '用户管理',
-    'setting'           => '配置管理',
-    'all_setting'       => '全部配置',
     'wait_queue'        => '等待队列',
     'run_queue'         => '正在执行',
     'done_queue'        => '执行完成',
@@ -49,4 +47,8 @@ return array(
         'city' => '城市',
         'date' => '时间'
         ),
+    'setting' => array(
+        'setting' => '配置管理',
+        'app' => '网站配置',
+        )
 );

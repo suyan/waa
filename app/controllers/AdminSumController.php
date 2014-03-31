@@ -3,7 +3,7 @@
 * @Author: Su Yan <http://yansu.org>
 * @Date:   2014-03-25 19:36:05
 * @Last Modified by:   Su Yan
-* @Last Modified time: 2014-03-29 08:57:37
+* @Last Modified time: 2014-03-31 10:40:35
 */
 
 class AdminSumController extends AdminController
@@ -16,10 +16,10 @@ class AdminSumController extends AdminController
     }
 
     public function getSum(){
-        $site = DB::table('hosts')->remember(10)->count();
-        $log = DB::table('hosts')->remember(10)->sum('line_count');
-        $attack = DB::table('hosts')->remember(10)->sum('attack_count');
-        $impact = DB::table('hosts')->remember(10)->sum('impact_count');
+        $site = DB::table('hosts')->count();
+        $log = DB::table('hosts')->sum('line_count');
+        $attack = DB::table('hosts')->sum('attack_count');
+        $impact = DB::table('hosts')->sum('impact_count');
         return View::make('admin.sum.sum')
             ->with('title', Lang::get('admin.home'))
             ->with('site', $site ? $site : 0)

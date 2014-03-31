@@ -3,7 +3,7 @@
 * @Author: Su Yan <http://yansu.org>
 * @Date:   2014-03-25 20:14:35
 * @Last Modified by:   Su Yan
-* @Last Modified time: 2014-03-30 15:26:19
+* @Last Modified time: 2014-03-30 22:49:18
 */
 class AdminHostController extends AdminController
 {
@@ -129,6 +129,7 @@ class AdminHostController extends AdminController
         $countryImpactCount = array();
         $cityAttackLocation = array();
         $clientImpactRate = array();
+        $cityAttackData = array();
         foreach($clients as $key => $client){
             $cityAttackData[] = $client['impact_count'];  
             $cityAttackLocation[] = array(

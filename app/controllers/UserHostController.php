@@ -3,7 +3,7 @@
  * @Author: Su Yan <http://yansu.org>
  * @Date:   2014-03-18 11:04:30
  * @Last Modified by:   Su Yan
- * @Last Modified time: 2014-03-29 20:51:23
+ * @Last Modified time: 2014-03-31 10:38:10
 */
 
 class UserHostController extends HomeController
@@ -212,7 +212,7 @@ class UserHostController extends HomeController
             }
 
 
-            return View::make('admin.host.info')
+            return View::make('user.host.info')
                 ->with('host', $host)
                 ->with('title', Lang::get('host.info'))
                 ->with('leftNav', $this->leftNav)
@@ -223,6 +223,29 @@ class UserHostController extends HomeController
                 ->with('countryAttackCount', json_encode($country_attack_count))
                 ->with('clientImpactRate', json_encode($clientImpactRate));
             
+        }
+    }
+
+    public function getVector($host){
+        $this->leftNav['host']['class'] = 'active';
+
+        $user_id = Auth::user()->id;
+        $host = DB::table('hosts')->where('id', $host)->first();
+
+        if($host->user_id != $user_id){
+            $error = Lang::get('host.not_owner');
+            return Redirect::to('host/host')
+                ->with('error', $error);
+        } else {
+            $vectors = Vector::where('host_id',$host->id)
+                ->orderBy('impact', 'desc')
+                ->paginate(Config::get('waa.paginate'));
+
+            return View::make('user.host.vector')
+                ->with('title', Lang::get('admin.host'))
+                ->with('leftNav', $this->leftNav)
+                ->with('hostId', $host->id)
+                ->with('vectors', $vectors);
         }
     }
 

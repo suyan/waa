@@ -9,12 +9,12 @@
         <span class="icon-bar"></span>
       </button>
       @if(Auth::guest())
-        <a class="navbar-brand" href="/about">@lang('home.logo')</a>
+        <a class="navbar-brand" href="{{ URL::to('about') }}">@lang('home.logo')</a>
       @else
         @if(Auth::user()->hasRole('admin'))
-          <a class="navbar-brand" href="/admin">@lang('home.logo')</a>
+          <a class="navbar-brand" href="{{ URL::to('admin') }}">@lang('home.logo')</a>
         @else
-          <a class="navbar-brand" href="/">@lang('home.logo')</a>
+          <a class="navbar-brand" href="{{ URL::to('/') }}">@lang('home.logo')</a>
         @endif
       @endif
     </div>
@@ -29,6 +29,10 @@
           <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ Auth::user()->username }} <b class="caret"></b></a>
             <ul class="dropdown-menu">
+              @if(Auth::user()->hasRole('admin'))
+                <li><a href="{{ URL::to('/') }}">@lang('home.user_home')</a></li>
+                <li><a href="{{ URL::to('admin') }}">@lang('home.admin_home')</a></li>
+              @endif
               <li class="divider"></li>
               <li><a href="{{ URL::to('user/logout') }}">@lang('user.logout')</a></li>
             </ul>

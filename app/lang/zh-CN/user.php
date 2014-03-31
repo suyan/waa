@@ -21,5 +21,4 @@ return array(
     'confirmation'       => '用户激活完成，再次登录',
     'wrong_confirmation' => '用户激活失败',
     'duplicated'         => '用户名或邮箱已存在',
-    'create_success'     => '注册成功，在此登录'
 );

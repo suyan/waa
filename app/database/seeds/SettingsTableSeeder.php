@@ -7,7 +7,8 @@ class SettingsTableSeeder extends Seeder {
 		DB::table('settings')->delete();
         $settings = array(
             array(
-                'name'         => 'waa.paginate',
+                'group'        => 'waa',
+                'name'         => 'paginate',
                 'display_name' => 'paginate',
                 'value'        => '10',
                 'description'  => 'the page count of app',

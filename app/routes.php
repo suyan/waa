@@ -17,6 +17,7 @@ Route::group(array('prefix'=>'host'), function(){
     Route::get('{host}/run', 'UserHostController@getRun');
     Route::post('{host}/run', 'UserHostController@postRun');
     Route::get('{host}/info', 'UserHostController@getInfo');
+    Route::get('{host}/vector', 'UserHostController@getVector');
     Route::controller('', 'UserHostController');
 });
 

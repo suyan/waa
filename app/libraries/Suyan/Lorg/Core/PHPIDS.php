@@ -3,7 +3,7 @@
 * @Author: Su Yan <http://yansu.org>
 * @Date:   2014-03-23 19:48:39
 * @Last Modified by:   Su Yan
-* @Last Modified time: 2014-03-23 22:53:42
+* @Last Modified time: 2014-03-30 22:20:04
 */
 namespace Suyan\Lorg\Core;
 use IDS;
@@ -41,7 +41,9 @@ class PHPIDS
         $this->phpids->config['General']['filter_type'] = 'json';        
         $this->phpids->config['General']['tmp_path'] = $this->phpidsTmpPath;
         $this->phpids->config['General']['scan_keys'] = false;        
-        $this->phpids->config['Caching']['caching'] = 'none';
+        $this->phpids->config['Caching']['caching'] = 'file';
+        $this->phpids->config['Caching']['path'] = $this->phpidsTmpPath.'/filter.cache';
+        $this->phpids->config['Caching']['expiration_time'] = 600;
     }
 
     # function: pipe request through PHPIDS-filter

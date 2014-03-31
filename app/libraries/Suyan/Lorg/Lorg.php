@@ -3,7 +3,7 @@
 * @Author: Su Yan <http://yansu.org>
 * @Date:   2014-01-17 22:36:34
 * @Last Modified by:   Su Yan
-* @Last Modified time: 2014-03-30 16:03:28
+* @Last Modified time: 2014-03-30 22:50:28
 */
 namespace Suyan\Lorg;
 class Lorg{

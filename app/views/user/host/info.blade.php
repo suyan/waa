@@ -8,10 +8,11 @@
 <div class="row">
   <h3>@lang('host.detail')</h3>
   <ul class="nav nav-tabs">
-    <li class="active"><a href="{{ URL::to('host/'.$host->id.'/info') }}">基本信息</a></li>
+    <li class="active"><a>基本信息</a></li>
     <li><a href="{{ URL::to('host/'.$host->id.'/vector') }}">攻击向量</a></li>
   </ul>
   <br>
+  <!-- 主机信息 -->
   <div class="col-md-6">
     <div class="panel panel-default">
       <div class="panel-heading">
@@ -41,6 +42,7 @@
       </table>
     </div>
   </div>
+  <!-- 攻击信息 -->
   <div class="col-md-6">
     <div class="panel panel-default">
       <div class="panel-heading">
@@ -81,17 +83,18 @@
       </div>
     </div>    
   </div>
+  <!-- 地理信息 -->
   <div class="col-md-12">
     <div class="panel panel-default">
       <div class="panel-heading">
         <h3 class="panel-title">@lang('host.info')</h3>
       </div>
-      <div class="panel-body">
-        <div id="world-map-gdp"  style="width: 100%; height: 400px"></div>
-      </div>
+        <div id="world-map-gdp"  style="width: 100%; height: 400px;"></div>
+      
     </div>    
   </div>
 </div>
+
 @stop
 
 @section('js')
@@ -127,7 +130,7 @@ $(function(){
     onMarkerLabelShow: function(event, label, index){
       label.html(
         ''+cityAttackLocation[index].name+'<br>'+
-        '攻击影响力: '+cityAttackData[index]+'<br>'+
+        '攻击影响力: '+cityAttackData[index]
       );
     },
     onRegionLabelShow: function(event, label, code){

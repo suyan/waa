@@ -1,6 +1,6 @@
 <?php
 App::before(function($request){
-    Setting::setAllConfigs();
+    Setting::setWaaConfigs();
 });
 App::after(function($request, $response){});
 
