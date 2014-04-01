@@ -3,7 +3,7 @@
 * @Author: Su Yan <http://yansu.org>
 * @Date:   2014-03-20 09:53:53
 * @Last Modified by:   Su Yan
-* @Last Modified time: 2014-03-29 15:30:14
+* @Last Modified time: 2014-03-31 16:47:11
 */
 class LorgQueue
 {
@@ -23,7 +23,7 @@ class LorgQueue
         DB::table('vectors')->where('host_id',$host->id)->delete();
         
         // 进行分析主机
-        $lorg = new Suyan\Lorg\Lorg('File', app_path().'/libraries/Suyan/Lorg/Data/config.php');
+        $lorg = new Suyan\Lorg\Lorg('Laravel', 'waa');
 
         $lorg->config->set('input', array(
             'default'=>'File', 
@@ -31,16 +31,16 @@ class LorgQueue
             ));
 
         $lorg->config->set('output', array(
-            'default'=>'Db', 
-            'Db'=> array(
+            'default'=>'Laravel', 
+            'Laravel'=> array(
                 'vector_db' => DB::table('vectors'),
                 'host_db' => DB::table('hosts'),
                 'host_id' => $host->id
             )));
 
         $lorg->config->set('log', array(
-            'default'=>'Db',
-            'Db' => array(
+            'default'=>'Laravel',
+            'Laravel' => array(
                 'host_db' => DB::table('hosts'),
                 'host_id' => $host->id
                 )

@@ -3,7 +3,7 @@
 * @Author: Su Yan <http://yansu.org>
 * @Date:   2014-01-18 14:05:30
 * @Last Modified by:   Su Yan
-* @Last Modified time: 2014-03-30 15:52:50
+* @Last Modified time: 2014-03-31 15:02:39
 */
 namespace Suyan\Lorg;
 use GeoIp2;
@@ -357,6 +357,7 @@ class Detect{
         $this->main->log('信息汇总');
         $this->main->resetInput();
         $this->lineIndex = 0;
+        // 第三次扫描文件作用：找出client其他请求，然后进行汇总
         while($line = $this->main->getLine()){
             trim($line);
             $data = Core\Helper::loglineToHttpdata($line,$this->regex);

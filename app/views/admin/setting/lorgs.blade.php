@@ -17,7 +17,7 @@
         <td>{{ $setting->name }}</td>  
         <td>{{ $setting->display_name }}</td>
         <td>{{ $setting->description }}</td>
-        <td>{{ $setting->value }}</td>
+        <td>{{ json_decode($setting->value) }}</td>
         <td>{{ $setting->created_at }}</td>
       </tr>
     @endforeach

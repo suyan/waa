@@ -3,7 +3,7 @@
 * @Author: Su Yan <http://yansu.org>
 * @Date:   2014-03-25 20:14:35
 * @Last Modified by:   Su Yan
-* @Last Modified time: 2014-03-30 11:07:09
+* @Last Modified time: 2014-03-31 15:10:39
 */
 use Indigo\Supervisor\Supervisor;
 use Indigo\Supervisor\Process;
@@ -70,12 +70,12 @@ class AdminTaskController extends AdminController
     public function getProcess(){
         $this->leftNav['process']['class'] = 'active';
         $connector = new Connector\InetConnector(
-            Config::get('waa.supervisor_host'), 
-            Config::get('waa.supervisor_port')
+            Config::get('waa.supervisor.host'), 
+            Config::get('waa.supervisor.port')
             );
         $connector->setCredentials(
-            Config::get('waa.supervisor_name'),
-            Config::get('waa.supervisor_password'));
+            Config::get('waa.supervisor.name'),
+            Config::get('waa.supervisor.password'));
         $supervisor = new Supervisor($connector);
         $processes = $supervisor->getAllProcessInfo();
 
@@ -95,15 +95,15 @@ class AdminTaskController extends AdminController
     }
 
     public function postProcessStart($process){
-        $process_name = Config::get('waa.supervisor_group').':'.$process;
+        $process_name = Config::get('waa.supervisor.group').':'.$process;
 
         $connector = new Connector\InetConnector(
-            Config::get('waa.supervisor_host'), 
-            Config::get('waa.supervisor_port')
+            Config::get('waa.supervisor.host'), 
+            Config::get('waa.supervisor.port')
             );
         $connector->setCredentials(
-            Config::get('waa.supervisor_name'),
-            Config::get('waa.supervisor_password'));
+            Config::get('waa.supervisor.name'),
+            Config::get('waa.supervisor.password'));
         $supervisor = new Supervisor($connector);
         try{
             $supervisor->startProcess($process_name, false);    
@@ -124,15 +124,15 @@ class AdminTaskController extends AdminController
     }
 
     public function postProcessStop($process){
-        $process_name = Config::get('waa.supervisor_group').':'.$process;
+        $process_name = Config::get('waa.supervisor.group').':'.$process;
 
         $connector = new Connector\InetConnector(
-            Config::get('waa.supervisor_host'), 
-            Config::get('waa.supervisor_port')
+            Config::get('waa.supervisor.host'), 
+            Config::get('waa.supervisor.port')
             );
         $connector->setCredentials(
-            Config::get('waa.supervisor_name'),
-            Config::get('waa.supervisor_password'));
+            Config::get('waa.supervisor.name'),
+            Config::get('waa.supervisor.password'));
         $supervisor = new Supervisor($connector);
 
         try{

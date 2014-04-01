@@ -1,6 +1,6 @@
 <?php
 App::before(function($request){
-    Setting::setWaaConfigs();
+    Setting::setWaaConfigs();// 将数据库中配置覆盖掉网站配置
 });
 App::after(function($request, $response){});
 

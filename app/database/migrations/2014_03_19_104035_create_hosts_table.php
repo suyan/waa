@@ -34,12 +34,12 @@ class CreateHostsTable extends Migration {
 
         // 打开处理进程
         $connector = new Connector\InetConnector(
-            Config::get('waa.supervisor_host'), 
-            Config::get('waa.supervisor_port')
+            Config::get('waa.supervisor.host'), 
+            Config::get('waa.supervisor.port')
             );
         $connector->setCredentials(
-            Config::get('waa.supervisor_name'),
-            Config::get('waa.supervisor_password'));
+            Config::get('waa.supervisor.name'),
+            Config::get('waa.supervisor.password'));
         $supervisor = new Supervisor($connector);
         try{
             $supervisor->startAllProcesses(false);     
@@ -55,12 +55,12 @@ class CreateHostsTable extends Migration {
         
         // 关闭处理进程
         $connector = new Connector\InetConnector(
-            Config::get('waa.supervisor_host'), 
-            Config::get('waa.supervisor_port')
+            Config::get('waa.supervisor.host'), 
+            Config::get('waa.supervisor.port')
             );
         $connector->setCredentials(
-            Config::get('waa.supervisor_name'),
-            Config::get('waa.supervisor_password')
+            Config::get('waa.supervisor.name'),
+            Config::get('waa.supervisor.password')
             );
         $supervisor = new Supervisor($connector);
         try{

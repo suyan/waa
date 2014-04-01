@@ -38,7 +38,8 @@ class LorgCommand extends Command {
 	public function fire()
 	{
 		$this->info('开始分析');
-		$lorg = new Suyan\Lorg\Lorg('File', app_path().'/libraries/Suyan/Lorg/Data/config.php');
+		$lorg = new Suyan\Lorg\Lorg('Laravel', 'waa');
+		// 从文件中读取配置项
 		$lorg->config->set('input', array(
 		    'default'=>'File', 
 		    'File'=>app_path().'/libraries/Suyan/Lorg/Data/log_test'
@@ -48,7 +49,6 @@ class LorgCommand extends Command {
 		include_once '/usr/local/Cellar/php55-xhprof/254eb24/xhprof_lib/utils/xhprof_runs.php';
 		 
 		xhprof_enable(XHPROF_FLAGS_CPU + XHPROF_FLAGS_MEMORY);
-		 
 		 
 		$lorg->run();
 		 

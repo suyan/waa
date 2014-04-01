@@ -3,7 +3,7 @@
 * @Author: Su Yan <http://yansu.org>
 * @Date:   2014-03-23 19:48:39
 * @Last Modified by:   Su Yan
-* @Last Modified time: 2014-03-30 22:20:04
+* @Last Modified time: 2014-04-01 10:44:01
 */
 namespace Suyan\Lorg\Core;
 use IDS;
@@ -16,6 +16,8 @@ class PHPIDS
     public $phpidsFilterPath = ''; //必须配置
     public $phpidsTmpPath = ''; //必须配置
     public $phpids = null;
+    public $monitor = null;
+    public $converter = null;
     public $addTags = true;
     public $tags = null;
     public $tagStats = array();
@@ -37,20 +39,22 @@ class PHPIDS
         }
 
         $this->phpids = IDS\Init::init();
+        $this->phpids->config['General']['filter_type'] = $this->phpidsFilterType;
         $this->phpids->config['General']['filter_path'] = $this->phpidsFilterPath;
-        $this->phpids->config['General']['filter_type'] = 'json';        
         $this->phpids->config['General']['tmp_path'] = $this->phpidsTmpPath;
         $this->phpids->config['General']['scan_keys'] = false;        
         $this->phpids->config['Caching']['caching'] = 'file';
         $this->phpids->config['Caching']['path'] = $this->phpidsTmpPath.'/filter.cache';
         $this->phpids->config['Caching']['expiration_time'] = 600;
+
+        $this->monitor = new IDS\Monitor($this->phpids);
+        $this->converter = new IDS\Converter();
     }
 
     # function: pipe request through PHPIDS-filter
     function detectionPhpids($request, $threshold){
         try{
-            $ids = new IDS\Monitor($this->phpids);
-            $result_phpids = $ids->run($request);
+            $result_phpids = $this->monitor->run($request);
         }catch (Exception $e){
             $this->log($e->getMessage());
             return false;
@@ -82,9 +86,7 @@ class PHPIDS
     // function: normalize parts of a request, using the PHPIDS converter
     function convertUsingPhpids(&$str, $key){
         try {
-            $ids = new IDS\Monitor($this->phpids);
-            $converter = new IDS\Converter();
-            $str = $converter->runAll($str, $ids);
+            $str = $this->converter->runAll($str, $this->monitor);
         }catch (Exception $e){
             $this->main->log($e->getMessage());
             return false;

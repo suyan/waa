@@ -50,5 +50,6 @@ return array(
     'setting' => array(
         'setting' => '配置管理',
         'app' => '网站配置',
+        'lorg' => '检测配置'
         )
 );
