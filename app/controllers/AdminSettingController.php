@@ -3,7 +3,7 @@
 * @Author: Su Yan <http://yansu.org>
 * @Date:   2014-03-25 20:14:35
 * @Last Modified by:   Su Yan
-* @Last Modified time: 2014-03-31 16:13:02
+* @Last Modified time: 2014-04-01 18:52:51
 */
 class AdminSettingController extends AdminController
 {
@@ -25,8 +25,11 @@ class AdminSettingController extends AdminController
             'lorgs' => array(
                 'name' => 'admin.setting.lorg',
                 'url' => 'admin/setting/lorgs',
-                'class' => ''
-            )
+                'class' => ''),
+            'regexes' => array(
+                'name' => 'admin.setting.regex',
+                'url' => 'admin/setting/regexes',
+                'class' => ''),
         );
     }
 
@@ -50,5 +53,16 @@ class AdminSettingController extends AdminController
             ->with('title', Lang::get('admin.setting.lorg'))
             ->with('leftNav', $this->leftNav)
             ->with('settings', $settings);
+    }
+
+    public function getRegexes(){
+        $this->leftNav['regexes']['class'] = 'active';
+
+        $settings = json_decode(File::get(Config::get('waa.phpids.phpidsFilterPath')),true);
+
+        return View::make('admin.setting.regexes')
+            ->with('title', Lang::get('admin.setting.lorg'))
+            ->with('leftNav', $this->leftNav)
+            ->with('settings', $settings['filters']['filter']);   
     }
 }

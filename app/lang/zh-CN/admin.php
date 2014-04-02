@@ -50,6 +50,14 @@ return array(
     'setting' => array(
         'setting' => '配置管理',
         'app' => '网站配置',
-        'lorg' => '检测配置'
+        'lorg' => '检测配置',
+        'regex' => '正则配置',
+        ),
+    'regex' => array(
+        'id' => 'id',
+        'regex' => '正则表达式',
+        'description' => '描述',
+        'tags' => '标签',
+        'impact' => '影响力'
         )
 );

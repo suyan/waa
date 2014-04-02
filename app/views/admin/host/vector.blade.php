@@ -31,9 +31,7 @@
               <td>{{ $vector->tags }}</td>
               <td>{{ $vector->quantification }}</td>
               <td>{{ $vector->status }}</td>
-              <td>
-                <a class="request" data-toggle="tooltip" title="{{ $vector->request }}" data-original-title="{{ $vector->request }}"><i class="fa fa-info-circle"></i></a>
-              </td>
+              <td width="20%"><input style="width:100%" type="text" disabled value="{{{ $vector->request }}}"></td>
               <td>{{ $vector->bytes }}</td>
               <td>{{ $vector->remote_city }}</td>
               <td>{{ $vector->date }}</td>

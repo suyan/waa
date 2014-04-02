@@ -28,15 +28,6 @@ class WaaController extends BaseController
     }
 
     public function getDemo(){
-        // $connector = new Connector\InetConnector(
-        //     Config::get('waa.supervisor.host'), 
-        //     Config::get('waa.supervisor.port')
-        //     );
-        // $connector->setCredentials(
-        //     Config::get('waa.supervisor.name'),
-        //     Config::get('waa.supervisor.password'));
-        // $supervisor = new Supervisor($connector);
-        // $process = $supervisor->getProcess('waaQueue:waaQueue_0');
-        // var_dump($process);
+        
     }
 }

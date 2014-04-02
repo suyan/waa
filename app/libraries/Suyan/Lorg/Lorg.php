@@ -3,7 +3,7 @@
 * @Author: Su Yan <http://yansu.org>
 * @Date:   2014-01-17 22:36:34
 * @Last Modified by:   Su Yan
-* @Last Modified time: 2014-03-31 17:54:27
+* @Last Modified time: 2014-04-01 19:35:40
 */
 namespace Suyan\Lorg;
 class Lorg{
@@ -57,7 +57,6 @@ class Lorg{
         $this->detect->run();
         
         $this->writeVectors();
-        // var_dump($this->detect->clients);
         $this->writeSummarize();
         
     }

@@ -66,6 +66,7 @@ Route::group(array('prefix'=>'admin'), function(){
     Route::get('setting', 'AdminSettingController@getSites');
     Route::get('setting/sites', 'AdminSettingController@getSites');
     Route::get('setting/lorgs', 'AdminSettingController@getLorgs');
+    Route::get('setting/regexes', 'AdminSettingController@getRegexes');
 });
 
 
