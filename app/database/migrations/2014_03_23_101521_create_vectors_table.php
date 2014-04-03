@@ -17,7 +17,7 @@ class CreateVectorsTable extends Migration {
 			$table->increments('id');
 			$table->integer('host_id');
 			$table->string('client');
-			$table->integer('impact')->unsigned();
+			$table->integer('impact');
 			$table->string('tags');
 			$table->string('quantification');
 			$table->integer('status')->unsigned();

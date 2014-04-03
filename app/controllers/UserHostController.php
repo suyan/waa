@@ -3,7 +3,7 @@
  * @Author: Su Yan <http://yansu.org>
  * @Date:   2014-03-18 11:04:30
  * @Last Modified by:   Su Yan
- * @Last Modified time: 2014-03-31 10:38:10
+ * @Last Modified time: 2014-04-03 11:04:40
 */
 
 class UserHostController extends HomeController
@@ -145,7 +145,10 @@ class UserHostController extends HomeController
             return Redirect::to('host/host')
                 ->with('error', $error);
         } else {
-            $vectors = DB::table('vectors')->where('host_id', $host->id)->get();
+            $vectors = DB::table('vectors')
+                ->where('host_id', $host->id)
+                ->where('impact', '>' , Config::get('waa.detect.threshold'))
+                ->get();
 
             //构造geoip图所需变量
             

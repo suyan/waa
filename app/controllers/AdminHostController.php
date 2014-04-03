@@ -3,7 +3,7 @@
 * @Author: Su Yan <http://yansu.org>
 * @Date:   2014-03-25 20:14:35
 * @Last Modified by:   Su Yan
-* @Last Modified time: 2014-03-30 22:49:18
+* @Last Modified time: 2014-04-03 11:05:47
 */
 class AdminHostController extends AdminController
 {
@@ -80,7 +80,10 @@ class AdminHostController extends AdminController
 
         $host = DB::table('hosts')->where('id', $host)->first();
 
-        $vectors = DB::table('vectors')->where('host_id', $host->id)->get();
+        $vectors = DB::table('vectors')
+            ->where('host_id', $host->id)
+            ->where('impact', '>' , Config::get('waa.detect.threshold'))
+            ->get();
 
         //构造geoip图所需变量
         
