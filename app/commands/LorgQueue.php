@@ -3,16 +3,15 @@
 * @Author: Su Yan <http://yansu.org>
 * @Date:   2014-03-20 09:53:53
 * @Last Modified by:   Su Yan
-* @Last Modified time: 2014-03-31 16:47:11
+* @Last Modified time: 2014-04-02 21:21:57
 */
 class LorgQueue
 {
     public function fire($job, $data)
     {
-
-        if ($job->attempts() > 3)
-            $job->delete();
-
+        // if ($job->attempts() > 3)
+        //     $job->delete(); 
+        
         $host_id = $data['host_id'];
         $host = Host::find($host_id);
         $host->status = 2;

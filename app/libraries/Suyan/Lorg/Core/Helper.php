@@ -3,7 +3,7 @@
 * @Author: Su Yan <http://yansu.org>
 * @Date:   2014-03-23 19:16:00
 * @Last Modified by:   Su Yan
-* @Last Modified time: 2014-03-30 15:42:14
+* @Last Modified time: 2014-04-03 08:57:25
 */
 
 namespace Suyan\Lorg\Core;
@@ -16,7 +16,7 @@ class Helper
 
     // client 
     public $allowedClientIdent = array('host', 'session', 'user', 'logname', 'all');
-    public $clientIdent = 'all';
+    public $clientIdent = 'host';
 
     // session
     public $sessionIdentifiers = array('SID', 'SESSID', 'PHPSESSID', 'JSESSIONID', 'ASP.NET_SessionId');

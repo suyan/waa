@@ -3,7 +3,7 @@
 * @Author: Su Yan <http://yansu.org>
 * @Date:   2014-01-17 22:36:34
 * @Last Modified by:   Su Yan
-* @Last Modified time: 2014-04-01 19:35:40
+* @Last Modified time: 2014-04-03 10:26:08
 */
 namespace Suyan\Lorg;
 class Lorg{
@@ -56,9 +56,11 @@ class Lorg{
         $this->detect = new Detect($this, $opts);
         $this->detect->run();
         
-        $this->writeVectors();
-        $this->writeSummarize();
-        
+
+        if ($this->detect->summarize)
+            $this->writeVectors();
+
+        $this->writeSummarize();     
     }
 
     function resetInput(){
@@ -92,14 +94,31 @@ class Lorg{
                     'status' => $action->data['Final-Status'],
                     'request' => $action->data['Request'],
                     'bytes' => $action->data['Bytes-Sent'],
-                    'remote_city' => $action->geoip_data[0],
-                    'remote_code' => $action->geoip_data[2],
-                    'location' => $action->geoip_data[1],
+                    'remote_city' => isset($action->geoip_data[0]) ? $action->geoip_data[0] : 'unknown',
+                    'remote_code' => isset($action->geoip_data[2]) ? $action->geoip_data[2] : 'unknown',
+                    'location' => isset($action->geoip_data[1]) ? $action->geoip_data[1]: 'unknown',
                     'date' => date('Y-m-d H:i:s',strtotime($action->data['Date']))
                     ));
                 $this->impactCount += $action->result;
             }
         }
+    }
+
+    function writeVector($action){
+        $this->output->writeVector(array(
+            'client' => $action->data['Remote-Host'],
+            'impact' => $action->result,
+            'tags' => implode(',', $action->tags),
+            'quantification' => $action->new_session ? $action->new_session : 'none',
+            'status' => $action->data['Final-Status'],
+            'request' => $action->data['Request'],
+            'bytes' => $action->data['Bytes-Sent'],
+            'remote_city' => isset($action->geoip_data[0]) ? $action->geoip_data[0] : 'unknown',
+            'remote_code' => isset($action->geoip_data[2]) ? $action->geoip_data[2] : 'unknown',
+            'location' => isset($action->geoip_data[1]) ? $action->geoip_data[1]: 'unknown',
+            'date' => date('Y-m-d H:i:s',strtotime($action->data['Date']))
+            ));
+        $this->impactCount += $action->result;
     }
 
     function writeSummarize(){

@@ -3,7 +3,7 @@
 * @Author: Su Yan <http://yansu.org>
 * @Date:   2014-03-24 12:22:44
 * @Last Modified by:   Su Yan
-* @Last Modified time: 2014-03-28 20:21:30
+* @Last Modified time: 2014-04-03 08:51:59
 */
 
 namespace Suyan\Lorg\Core;
@@ -252,7 +252,7 @@ class Quantify
         return $new_session;
     }
 
-    # function: classify clients and their sessions, optionally create a nice pchart
+    # function: classify clients and their sessions
     function sessionClassification(&$clients, $requestCount){        
         foreach ($clients as $name => &$client){
             foreach ($client->actions as &$action){

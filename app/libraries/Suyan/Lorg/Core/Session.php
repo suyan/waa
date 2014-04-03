@@ -3,7 +3,7 @@
 * @Author: Su Yan <http://yansu.org>
 * @Date:   2014-01-20 12:04:52
 * @Last Modified by:   Su Yan
-* @Last Modified time: 2014-03-23 20:26:29
+* @Last Modified time: 2014-04-03 09:37:02
 */
 namespace Suyan\Lorg\Core;
 
@@ -40,10 +40,10 @@ class Session
     // ---------------------------------------------------------------- //
 
     # function: aggregate data used to classify session as spawned by human or machine
-    function reset_properties($Detect, $action){
+    function reset_properties($Quantify, $action){
         // determine method
         $method = explode(' ', $action->data['Request']);
-        $method = in_array($method[0], $Detect->allowedHttpMethods) ? $method[0] : 'non_rfc2616';
+        $method = in_array($method[0], $Quantify->allowedHttpMethods) ? $method[0] : 'non_rfc2616';
 
         // determine status
         $status = isset($action->data['Final-Status']) ? $action->data['Final-Status'] : null;
@@ -63,7 +63,7 @@ class Session
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
         // if we can act on the assumtion of a non-autoload request
-        if ((is_string($action->path)) and (preg_match("/.*(html?|\/|" . implode('|', $Detect->webAppExtensions) . ")$/", $action->path))){
+        if ((is_string($action->path)) and (preg_match("/.*(html?|\/|" . implode('|', $Quantify->webAppExtensions) . ")$/", $action->path))){
             $this->number_of_webapp_requests++;
             if (isset($this->last_non_autoload_visit) and isset($action->date))
             {
@@ -71,7 +71,7 @@ class Session
                 $delay = strtotime($action->date) - strtotime($this->last_non_autoload_visit);
 
                 // if we're within a valid session's timespan
-                if ($delay <= $Detect->maxSessionDuration)
+                if ($delay <= $Quantify->maxSessionDuration)
                 {
                     // online variance calculation of inter-request time delay
                     Helper::onlineVariance($this->avg_time_delay, $this->std_time_delay, $this->index_time_delay, $delay);;

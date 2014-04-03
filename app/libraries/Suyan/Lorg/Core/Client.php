@@ -3,7 +3,7 @@
 * @Author: Su Yan <http://yansu.org>
 * @Date:   2014-01-20 10:54:09
 * @Last Modified by:   Su Yan
-* @Last Modified time: 2014-03-23 20:26:05
+* @Last Modified time: 2014-04-03 09:37:16
 */
 namespace Suyan\Lorg\Core;
 
@@ -50,7 +50,7 @@ class Client
 // ------------------------------------------------------------------ //
 
     # function: aggregate data used to classify client as night-/working-time visitors
-    function reset_properties($Detect, $action)
+    function reset_properties($Quantify, $action)
     {
         // set date of first rendezvous
         if (!isset($this->first_seen))
@@ -79,12 +79,12 @@ class Client
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
         // if we can act on the assumtion of a non-autoload request
-        if ((is_string($action->path)) and (preg_match("/.*(html?|\/|" . implode('|', $Detect->webAppExtensions) . ")$/", $action->path))){
+        if ((is_string($action->path)) and (preg_match("/.*(html?|\/|" . implode('|', $Quantify->webAppExtensions) . ")$/", $action->path))){
             // get inter-request time delay
             $delay = strtotime($action->date) - strtotime($this->last_non_autoload_visit);
 
             // if we're within a session's timespan and don't have a future timestamp in the future
-            if (($delay <= $Detect->maxSessionDuration) and ($delay >= 0)){
+            if (($delay <= $Quantify->maxSessionDuration) and ($delay >= 0)){
                 // online variance calculation of inter-request time delay
                 Helper::onlineVariance($this->avg_time_delay, $this->std_time_delay, $this->index_time_delay, $delay);
 

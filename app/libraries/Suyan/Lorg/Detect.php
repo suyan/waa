@@ -3,7 +3,7 @@
 * @Author: Su Yan <http://yansu.org>
 * @Date:   2014-01-18 14:05:30
 * @Last Modified by:   Su Yan
-* @Last Modified time: 2014-03-31 15:02:39
+* @Last Modified time: 2014-04-03 10:52:12
 */
 namespace Suyan\Lorg;
 use GeoIp2;
@@ -33,6 +33,7 @@ class Detect{
     public $pathes = array();
 
     public $threshold = 10;
+    public $summarize = true;
 
     // Log
     public $allowedInputTypes = array(
@@ -187,11 +188,19 @@ class Detect{
                         $ipaddr = $this->main->helper->hostnameToIpaddr($remote_host);
                     }
 
-                    if ($this->main->geoip->geoipLookup)
-                        $this->main->geoip->geoipData = $this->main->geoip->geoTargeting($ipaddr);
+                    if ($this->main->geoip->geoipLookup){
+                        try {
+                            $this->main->geoip->geoipData = $this->main->geoip->geoTargeting($ipaddr);    
+                        } catch (\Exception $e) {}
+                        
+                    }
 
                     if ($this->main->dnsbl->dnsblLookup)
                         $this->main->dnsbl->dnsblData = $this->main->dnsbl->ipaddrToDnsbl($ipaddr);
+
+                    if ($this->main->helper->dnsLookup and !$summarize){
+                        $remote_host = $this->main->helper->ipaddrToHostname($remote_host);
+                    }
 
                     if (in_array('geoip', $this->detectMode))
                         $result['GEOIP'] = $this->main->geoip->detectionGeoip($ipaddr, $this->dataset);
@@ -203,29 +212,45 @@ class Detect{
             }
 
             $result_sum = array_sum($result);
+
             if ($result_sum >= $this->threshold){
                 $this->attackCount++;
-
+ 
                 $client = $this->main->helper->clientIdentification($data, $remote_host);
 
                 if (!empty($this->main->quantify->quantifyType))
                     $success = $this->main->quantify->attackQuantification($request, $data, $path, $client, $dataset);
 
-                if (!isset($this->clients[$client])){
-                    $this->clients[$client] = new Core\Client($client);
+                if($this->summarize){
+                    if (!isset($this->clients[$client])){
+                        $this->clients[$client] = new Core\Client($client);
+                    }
+
+                    # create action, containing data + result/tags
+                    $this->actions[$client][md5(serialize($data))] = new Core\Action($date, $data, $path, $result_sum, $this->main->phpids->tags, $success, $remote_host, $this->main->geoip->geoipData, $this->main->dnsbl->dnsblData);
+
+                    $this->clients[$client]->result += $result_sum;
+
+                    if (isset($success) and ($success != '-')){
+                        $this->clients[$client]->severity++;
+                        if (!in_array($success, $this->clients[$client]->quantification))
+                            $this->clients[$client]->quantification[] = $success;
+                    }
+                } else {
+
+                    $this->clients[$client] = isset($this->clients[$client]) ? $this->clients[$client]+1 : 1;
+                    // 记录单条请求分析
+                    $this->main->writeVector(new Core\Action($date, $data, $path, $result_sum, $this->main->phpids->tags, $success, $remote_host, $this->main->geoip->geoipData, $this->main->dnsbl->dnsblData));
                 }
-
-                # create action, containing data + result/tags
-                $this->actions[$client][md5(serialize($data))] = new Core\Action($date, $data, $path, $result_sum, $this->main->phpids->tags, $success, $remote_host, $this->main->geoip->geoipData, $this->main->dnsbl->dnsblData);
-
-                $this->clients[$client]->result += $result_sum;
-
-                if (isset($success) and ($success != '-')){
-                    $this->clients[$client]->severity++;
-                    if (!in_array($success, $this->clients[$client]->quantification))
-                        $this->clients[$client]->quantification[] = $success;
-                }
+                
+            } else {
+                if(!$this->summarize)
+                    $this->main->writeVector(new Core\Action($date, $data, $path, $result_sum, $this->main->phpids->tags, '-', $data['Remote-Host'], $this->main->geoip->geoipData, $this->main->dnsbl->dnsblData));
+                
             }
+        } else {
+            if(!$this->summarize)
+                $this->main->writeVector(new Core\Action($date, $data, $path, 0, array('none'), '-', $data['Remote-Host'], null, null));
         }
 
     }
@@ -243,8 +268,12 @@ class Detect{
                     if ($this->main->geoip->geoipLookup or $this->main->dnsbl->dnsblLookup)
                         $ipaddr = $this->main->helper->hostnameToIpaddr($remote_host);
 
-                    if ($this->main->geoip->geoipLookup)
-                        $this->main->geoip->geoipData = $this->main->geoip->geoTargeting($ipaddr);
+                    if ($this->main->geoip->geoipLookup){
+                        try {
+                           $this->main->geoip->geoipData = $this->main->geoip->geoTargeting($ipaddr);  
+                        } catch (\Exception $e) {}
+                        
+                    }
 
                     if ($this->main->dnsbl->dnsblLookup)
                         $this->main->dnsbl->dnsblData = $this->main->dnsbl->ipaddrToDnsbl($ipaddr);
@@ -345,10 +374,16 @@ class Detect{
 
                 $this->doDetection($date, $data, $request, $path);
             }
-
-            if(ceil($this->lineIndex * 60 / $this->lineCount) != $this->progress-20){
-                $this->progress = 20 + ceil($this->lineIndex * 60 / $this->lineCount);
-                $this->main->log->logProcess($this->progress);
+            if ($this->summarize) {
+                if(ceil($this->lineIndex * 60 / $this->lineCount) != $this->progress-20){
+                    $this->progress = 20 + ceil($this->lineIndex * 60 / $this->lineCount);
+                    $this->main->log->logProcess($this->progress);
+                }
+            } else {
+                if(ceil($this->lineIndex * 80 / $this->lineCount) != $this->progress-20){
+                    $this->progress = 20 + ceil($this->lineIndex * 80 / $this->lineCount);
+                    $this->main->log->logProcess($this->progress);
+                }
             }
         }
     }
@@ -371,6 +406,7 @@ class Detect{
                     $this->doSummarize($data, $request, $path);
                 }
             }
+            
             if(ceil($this->lineIndex * 20 / $this->lineCount) != $this->progress-80){
                 $this->progress = 80 + ceil($this->lineIndex * 20 / $this->lineCount);
                 $this->main->log->logProcess($this->progress);
@@ -383,8 +419,10 @@ class Detect{
         $this->main->logProcess($this->progress);
         $this->preProcessing();
         $this->mainProcessing();
-        $this->postProcessing();
+        if ($this->summarize)
+            $this->postProcessing();
         $this->endTime = time();
+        $this->main->log('检测完成');
         return true;
     }
 }

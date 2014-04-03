@@ -32,7 +32,8 @@ return array(
             // 'geoip',  //地理位置检测，略慢
             'length'  //返回长度
             ),
-        'threshold' => 10
+        'threshold' => 10,
+        'summarize' => false,
         ),
     'phpids' => array(
         'phpidsConfigPath' => '',

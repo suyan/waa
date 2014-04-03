@@ -25,7 +25,7 @@
 #### supervisor setting
 
     [program:waaQueue]
-    command                 = php artisan queue:work
+    command                 = php artisan queue:work --tries=2
     directory               = /Users/yansu/Sites/waa
     process_name            = %(program_name)s_%(process_num)s
     numprocs                = 3

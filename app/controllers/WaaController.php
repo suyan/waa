@@ -2,6 +2,7 @@
 use Indigo\Supervisor\Supervisor;
 use Indigo\Supervisor\Process;
 use Indigo\Supervisor\Connector;
+use GeoIp2\Database\Reader;
 class WaaController extends BaseController
 {
     
@@ -28,6 +29,5 @@ class WaaController extends BaseController
     }
 
     public function getDemo(){
-        
     }
 }

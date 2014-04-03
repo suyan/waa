@@ -43,6 +43,7 @@ class LorgCommand extends Command {
 		$lorg->config->set('input', array(
 		    'default'=>'File', 
 		    'File'=>app_path().'/libraries/Suyan/Lorg/Data/log_test'
+		    // 'File' => '/Users/yansu/Downloads/access_log'
 		    ));
 		
 		include_once '/usr/local/Cellar/php55-xhprof/254eb24/xhprof_lib/utils/xhprof_lib.php';
