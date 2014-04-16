@@ -4,9 +4,11 @@ Route::pattern('host', '[0-9]+');
 Route::pattern('code', '[0-9a-z]+');
 
 Route::get('/', 'UserSumController@getSum');
+# TODO 修改用户首页route
 Route::get('about', 'WaaController@getAbout');
 Route::get('demo', 'WaaController@getDemo');
 Route::get('activity', 'UserActivityController@getActivity');
+Route::get('home', 'UserSumController@getSum');
 
 Route::group(array('prefix'=>'host'), function(){
     Route::get('host', 'UserHostController@getHost');

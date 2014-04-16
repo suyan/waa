@@ -37,10 +37,22 @@
             {{ Session::get('error') }}
           </div>
         @endif
+        @if (isset($error))
+          <div class="alert alert-danger fade in">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+            {{ $error }}
+          </div>
+        @endif
         @if (Session::get('info'))
           <div class="alert alert-info fade in">
             <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
             {{ Session::get('info') }}
+          </div>
+        @endif
+        @if (isset($info))
+          <div class="alert alert-info fade in">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+            {{ $info }}
           </div>
         @endif
         @yield('body')

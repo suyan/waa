@@ -3,7 +3,7 @@
 * @Author: Su Yan <http://yansu.org>
 * @Date:   2014-03-25 20:14:35
 * @Last Modified by:   Su Yan
-* @Last Modified time: 2014-03-31 15:10:39
+* @Last Modified time: 2014-04-16 19:18:26
 */
 use Indigo\Supervisor\Supervisor;
 use Indigo\Supervisor\Process;
@@ -76,12 +76,18 @@ class AdminTaskController extends AdminController
         $connector->setCredentials(
             Config::get('waa.supervisor.name'),
             Config::get('waa.supervisor.password'));
-        $supervisor = new Supervisor($connector);
-        $processes = $supervisor->getAllProcessInfo();
-
+        try{
+            $supervisor = new Supervisor($connector);
+            $processes = $supervisor->getAllProcessInfo();    
+        } catch (Exception $e) {
+            $processes = array();
+            $error = Lang::get('admin.process.supervisor_error');
+        }
+        
         return View::make('admin.task.process')
             ->with('title', Lang::get('admin.process.process'))
             ->with('leftNav', $this->leftNav)
+            ->with('error', isset($error) ? $error : null)
             ->with('processes', $processes);   
     }
 

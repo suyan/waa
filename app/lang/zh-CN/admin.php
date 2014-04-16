@@ -34,7 +34,8 @@ return array(
         'start_ok' => '开启成功',
         'stop_ok' => '关闭成功',
         'confirm_start' => '确定开启此进程？',
-        'confirm_stop' => '确定关闭此进程？'
+        'confirm_stop' => '确定关闭此进程？',
+        'supervisor_error' => '服务未启动'
         ),
     'vector' => array(
         'client' => 'IP',
