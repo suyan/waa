@@ -3,24 +3,25 @@
 Route::pattern('host', '[0-9]+');
 Route::pattern('code', '[0-9a-z]+');
 
-Route::get('/', 'UserSumController@getSum');
-# TODO 修改用户首页route
+Route::get('/', 'WaaController@getAbout');
 Route::get('about', 'WaaController@getAbout');
 Route::get('demo', 'WaaController@getDemo');
-Route::get('activity', 'UserActivityController@getActivity');
-Route::get('home', 'UserSumController@getSum');
 
-Route::group(array('prefix'=>'host'), function(){
-    Route::get('host', 'UserHostController@getHost');
-    Route::get('create', 'UserHostController@getCreate');
-    Route::post('create', 'UserHostController@postCreate');
-    Route::get('{host}/delete', 'UserHostController@getDelete');
-    Route::post('{host}/delete', 'UserHostController@postDelete');
-    Route::get('{host}/run', 'UserHostController@getRun');
-    Route::post('{host}/run', 'UserHostController@postRun');
-    Route::get('{host}/info', 'UserHostController@getInfo');
-    Route::get('{host}/vector', 'UserHostController@getVector');
-    Route::controller('', 'UserHostController');
+
+Route::group(array('prefix'=>'home'), function(){
+    Route::get('/', 'HomeSumController@getSum');
+    Route::get('activity', 'HomeActivityController@getActivity');
+
+    Route::get('host/host', 'HomeHostController@getHost');
+    Route::get('host/create', 'HomeHostController@getCreate');
+    Route::post('host/create', 'HomeHostController@postCreate');
+    Route::get('host/{host}/delete', 'HomeHostController@getDelete');
+    Route::post('host/{host}/delete', 'HomeHostController@postDelete');
+    Route::get('host/{host}/run', 'HomeHostController@getRun');
+    Route::post('host/{host}/run', 'HomeHostController@postRun');
+    Route::get('host/{host}/info', 'HomeHostController@getInfo');
+    Route::get('host/{host}/vector', 'HomeHostController@getVector');
+    Route::controller('', 'HomeHostController');
 });
 
 // user route

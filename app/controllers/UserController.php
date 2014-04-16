@@ -9,10 +9,6 @@ class UserController extends BaseController {
                 'name' => 'home.home', 
                 'url' => 'about', 
                 'class' => ''),
-            // 'about' => array(
-            //     'name' => 'home.about', 
-            //     'url' => 'about', 
-            //     'class' => ''),
         );
         $this->topNav['home']['class'] = 'active';
         View::share('topNav', $this->topNav);
@@ -71,7 +67,7 @@ class UserController extends BaseController {
             if(Auth::user()->hasRole('admin'))
                 return Redirect::to('admin');     
             else
-                return Redirect::intended('/'); 
+                return Redirect::to('home'); 
         } else {
             $user = new User;
             if(Confide::isThrottled( $input )) {

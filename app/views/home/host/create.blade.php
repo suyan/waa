@@ -4,7 +4,7 @@
 <h1>创建主机</h1>
 <hr>
 <div class="col-md-12">
-  {{ Form::open(array('url' => 'host/create', 'files' => true, 'id' => 'login', 'class' => 'form-horizontal')) }}
+  {{ Form::open(array('url' => 'home/host/create', 'files' => true, 'id' => 'login', 'class' => 'form-horizontal')) }}
     @if (isset($error))
       <p class="bg-danger">$error</p>    
     @endif

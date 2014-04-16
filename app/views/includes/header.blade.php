@@ -14,7 +14,7 @@
         @if(Auth::user()->hasRole('admin'))
           <a class="navbar-brand" href="{{ URL::to('admin') }}">@lang('home.logo')</a>
         @else
-          <a class="navbar-brand" href="{{ URL::to('/') }}">@lang('home.logo')</a>
+          <a class="navbar-brand" href="{{ URL::to('home') }}">@lang('home.logo')</a>
         @endif
       @endif
     </div>
@@ -30,7 +30,7 @@
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ Auth::user()->username }} <b class="caret"></b></a>
             <ul class="dropdown-menu">
               @if(Auth::user()->hasRole('admin'))
-                <li><a href="{{ URL::to('/') }}">@lang('home.user_home')</a></li>
+                <li><a href="{{ URL::to('home') }}">@lang('home.user_home')</a></li>
                 <li><a href="{{ URL::to('admin') }}">@lang('home.admin_home')</a></li>
               @endif
               <li class="divider"></li>

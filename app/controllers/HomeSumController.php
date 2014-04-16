@@ -3,10 +3,10 @@
 * @Author: Su Yan <http://yansu.org>
 * @Date:   2014-03-25 19:36:05
 * @Last Modified by:   Su Yan
-* @Last Modified time: 2014-03-29 15:13:33
+* @Last Modified time: 2014-04-16 21:31:51
 */
 
-class UserSumController extends HomeController
+class HomeSumController extends HomeController
 {
     public function __construct(){
         parent::__construct();
@@ -21,7 +21,7 @@ class UserSumController extends HomeController
         $log = DB::table('hosts')->where('user_id',$user_id)->sum('line_count');
         $attack = DB::table('hosts')->where('user_id',$user_id)->sum('attack_count');
         $impact = DB::table('hosts')->where('user_id',$user_id)->sum('impact_count');
-        return View::make('user.sum.sum')
+        return View::make('home.sum.sum')
             ->with('title', Lang::get('home.home'))
             ->with('site', $site ? $site : 0)
             ->with('log', $log ? $log : 0)

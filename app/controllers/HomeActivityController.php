@@ -3,9 +3,9 @@
 * @Author: Su Yan <http://yansu.org>
 * @Date:   2014-03-26 10:50:02
 * @Last Modified by:   Su Yan
-* @Last Modified time: 2014-03-26 10:54:09
+* @Last Modified time: 2014-04-16 21:32:08
 */
-class UserActivityController extends HomeController
+class HomeActivityController extends HomeController
 {
     public $leftNav;
     
@@ -32,7 +32,7 @@ class UserActivityController extends HomeController
         
         $activities = Activity::where('user_id', Auth::user()->id)->paginate(20);
 
-        return View::make('user.activity.activity')
+        return View::make('home.activity.activity')
             ->with('leftNav', $this->leftNav)
             ->with('title', Lang::get('host.activity'))
             ->with('activities', $activities);

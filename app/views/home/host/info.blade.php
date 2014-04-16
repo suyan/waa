@@ -9,7 +9,7 @@
   <h3>@lang('host.detail')</h3>
   <ul class="nav nav-tabs">
     <li class="active"><a>基本信息</a></li>
-    <li><a href="{{ URL::to('host/'.$host->id.'/vector') }}">攻击向量</a></li>
+    <li><a href="{{ URL::to('home/host/'.$host->id.'/vector') }}">攻击向量</a></li>
   </ul>
   <br>
   <!-- 主机信息 -->

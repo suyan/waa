@@ -3,10 +3,10 @@
  * @Author: Su Yan <http://yansu.org>
  * @Date:   2014-03-18 11:04:30
  * @Last Modified by:   Su Yan
- * @Last Modified time: 2014-04-03 11:04:40
+ * @Last Modified time: 2014-04-16 21:34:50
 */
 
-class UserHostController extends HomeController
+class HomeHostController extends HomeController
 {
     public $leftNav;
     
@@ -21,7 +21,7 @@ class UserHostController extends HomeController
         $this->leftNav = array(
             'host' => array(
                 'name' => 'host.host',
-                'url' => 'host/host',
+                'url' => 'home/host/host',
                 'class' => ''
             )
         );
@@ -33,7 +33,7 @@ class UserHostController extends HomeController
         
         $hosts = Host::where('user_id', Auth::user()->id)->paginate(Config::get('waa.paginate'));
 
-        return View::make('user.host.host')
+        return View::make('home.host.host')
             ->with('leftNav', $this->leftNav)
             ->with('title', Lang::get('host.host'))
             ->with('hosts', $hosts);
@@ -43,7 +43,7 @@ class UserHostController extends HomeController
     {
         $this->leftNav['host']['class'] = 'active';
         
-        return View::make('user.host.create')
+        return View::make('home.host.create')
             ->with('leftNav', $this->leftNav)
             ->with('title', Lang::get('host.create'));
     }
@@ -61,7 +61,7 @@ class UserHostController extends HomeController
             $errors = $host->errors();
             if (isset($uploadfile)) $errors->add('uploadfile', $uploadfile);
             
-            return Redirect::to('host/create')->withErrors($errors);
+            return Redirect::to('home/host/create')->withErrors($errors);
         }
         
         $file = Input::file('uploadfile');
@@ -72,14 +72,14 @@ class UserHostController extends HomeController
         $host->user_id = Auth::user()->id;
         $host->save();
         
-        return Redirect::to('host/host');
+        return Redirect::to('home/host/host');
     }
 
     public function getDelete($host)
     {
         $this->leftNav['host']['class'] = 'active';
 
-        return View::make('user.host.delete')
+        return View::make('home.host.delete')
             ->with('leftNav', $this->leftNav)
             ->with('title', Lang::get('host.delete'))
             ->with('host', $host);
@@ -93,14 +93,14 @@ class UserHostController extends HomeController
 
         if($host->user_id != $user_id){
             $error = Lang::get('host.not_owner');
-            return Redirect::to('host/host')
+            return Redirect::to('home/host/host')
                 ->with('error', $error);
         } else {
             //删除主机，并且删除文件
             File::delete(Config::get('waa.upload_dir').'/'.$host->file_name);
             DB::table('vectors')->where('host_id',$host->id)->delete();
             $host->delete();
-            return Redirect::to('host/host');
+            return Redirect::to('home/host/host');
         }
     }
 
@@ -108,7 +108,7 @@ class UserHostController extends HomeController
     {
         $this->leftNav['host']['class'] = 'active';
 
-        return View::make('user.host.run')
+        return View::make('home.host.run')
             ->with('leftNav', $this->leftNav)
             ->with('title', Lang::get('host.run'))
             ->with('host', $host);
@@ -122,14 +122,14 @@ class UserHostController extends HomeController
 
         if($host->user_id != $user_id){
             $error = Lang::get('host.not_owner');
-            return Redirect::to('host/host')
+            return Redirect::to('home/host/host')
                 ->with('error', $error);
         } else {
             // 开始分析
             $host->status = 1; //进入队列
             $host->save();
             Queue::push('LorgQueue', array('host_id' => $host->id));
-            return Redirect::to('host/host');
+            return Redirect::to('home/host/host');
         }
     }
 
@@ -142,7 +142,7 @@ class UserHostController extends HomeController
 
         if($host->user_id != $user_id){
             $error = Lang::get('host.not_owner');
-            return Redirect::to('host/host')
+            return Redirect::to('home/host/host')
                 ->with('error', $error);
         } else {
             $vectors = DB::table('vectors')
@@ -215,7 +215,7 @@ class UserHostController extends HomeController
             }
 
 
-            return View::make('user.host.info')
+            return View::make('home.host.info')
                 ->with('host', $host)
                 ->with('title', Lang::get('host.info'))
                 ->with('leftNav', $this->leftNav)
@@ -237,14 +237,14 @@ class UserHostController extends HomeController
 
         if($host->user_id != $user_id){
             $error = Lang::get('host.not_owner');
-            return Redirect::to('host/host')
+            return Redirect::to('home/host/host')
                 ->with('error', $error);
         } else {
             $vectors = Vector::where('host_id',$host->id)
                 ->orderBy('impact', 'desc')
                 ->paginate(Config::get('waa.paginate'));
 
-            return View::make('user.host.vector')
+            return View::make('home.host.vector')
                 ->with('title', Lang::get('admin.host'))
                 ->with('leftNav', $this->leftNav)
                 ->with('hostId', $host->id)

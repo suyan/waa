@@ -4,7 +4,7 @@
   <div class="row">
     <h3>@lang('host.detail')</h3>
     <ul class="nav nav-tabs">
-      <li><a href="{{ URL::to('host/'.$hostId.'/info') }}">基本信息</a></li>
+      <li><a href="{{ URL::to('home/host/'.$hostId.'/info') }}">基本信息</a></li>
       <li class="active"><a>攻击向量</a></li>
     </ul>
     <br>

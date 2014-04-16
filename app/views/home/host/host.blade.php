@@ -3,7 +3,7 @@
 @section('body')
 <br>
 <p>
-  <a type="button" class="btn btn-primary" href="{{ URL::to('host/create')}}">
+  <a type="button" class="btn btn-primary" href="{{ URL::to('home/host/create')}}">
     @lang('host.create')
   </a>
 </p>
@@ -32,8 +32,8 @@
         @if ($host->status == 0)
           <td>@lang('host.not_run')</td> 
           <td>
-            <a href="{{ URL::to('host/'.$host->id.'/run') }}" class="btn btn-primary btn-xs">@lang('host.start')</a>
-            <a href="{{ URL::to('host/'.$host->id.'/delete') }}" class="btn btn-danger btn-xs">@lang('host.delete')</a>
+            <a href="{{ URL::to('home/host/'.$host->id.'/run') }}" class="btn btn-primary btn-xs">@lang('host.start')</a>
+            <a href="{{ URL::to('home/host/'.$host->id.'/delete') }}" class="btn btn-danger btn-xs">@lang('host.delete')</a>
           </td>
         @elseif ($host->status == 1)
           <td>@lang('host.waiting')</td> 
@@ -50,8 +50,8 @@
         @elseif ($host->status == 3)
           <td>@lang('host.have_run')</td> 
           <td>
-            <a href="{{ URL::to('host/'.$host->id.'/info') }}" class="btn btn-default btn-xs">@lang('host.info')</a>
-            <a href="{{ URL::to('host/'.$host->id.'/delete') }}" class="btn btn-danger btn-xs">@lang('host.delete')</a>
+            <a href="{{ URL::to('home/host/'.$host->id.'/info') }}" class="btn btn-default btn-xs">@lang('host.info')</a>
+            <a href="{{ URL::to('home/host/'.$host->id.'/delete') }}" class="btn btn-danger btn-xs">@lang('host.delete')</a>
           </td>
         @endif
       </tr>

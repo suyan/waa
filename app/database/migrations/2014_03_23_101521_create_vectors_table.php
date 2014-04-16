@@ -14,6 +14,8 @@ class CreateVectorsTable extends Migration {
 	{
 		Schema::create('vectors', function($table)
 		{
+			$table->engine = 'MyISAM';
+
 			$table->increments('id');
 			$table->integer('host_id');
 			$table->string('client');
