@@ -3,7 +3,7 @@
 Route::pattern('host', '[0-9]+');
 Route::pattern('code', '[0-9a-z]+');
 
-Route::get('/', 'WaaController@getAbout');
+Route::get('/', 'WaaController@getIndex');
 Route::get('about', 'WaaController@getAbout');
 Route::get('demo', 'WaaController@getDemo');
 
@@ -13,6 +13,7 @@ Route::group(array('prefix'=>'home'), function(){
     Route::get('activity', 'HomeActivityController@getActivity');
 
     Route::get('host/host', 'HomeHostController@getHost');
+    Route::get('host/{ids}/host', 'HomeHostController@getHostByIds');
     Route::get('host/create', 'HomeHostController@getCreate');
     Route::post('host/create', 'HomeHostController@postCreate');
     Route::get('host/{host}/delete', 'HomeHostController@getDelete');

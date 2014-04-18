@@ -25,6 +25,7 @@ class CreateHostsTable extends Migration {
             $table->integer('attack_count')->unsigned()->default(0);
             $table->integer('impact_count')->unsigned()->default(0);
             $table->integer('process')->unsigned()->default(0);
+            $table->integer('pid')->unsigned()->default(0);
             $table->string('log')->default(' ');
             $table->timestamp('start_time');
             $table->timestamp('end_time');

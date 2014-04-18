@@ -1,11 +1,6 @@
 <?php
-use Indigo\Supervisor\Supervisor;
-use Indigo\Supervisor\Process;
-use Indigo\Supervisor\Connector;
-use GeoIp2\Database\Reader;
 class WaaController extends BaseController
-{
-    
+{    
     public function __construct()
     {
         parent::__construct();
@@ -14,20 +9,32 @@ class WaaController extends BaseController
                 'name' => 'home.home', 
                 'url' => 'about', 
                 'class' => ''),
-            // 'about' => array(
-            //     'name' => 'home.about', 
-            //     'url' => 'about', 
-            //     'class' => ''),
         );
-        // $this->topNav['about']['class'] = 'active';
         View::share('topNav', $this->topNav);
     }
     
-    public function getAbout()
+    // index page of site
+    public function getIndex()
     {
-        return View::make('pages.about')->with('title', Lang::get('home.about'));
+        if (Auth::guest())
+            return Redirect::to('about');
+        elseif (Auth::user()->hasRole('admin'))
+            return Redirect::to('admin');     
+        else
+            return Redirect::to('home'); 
     }
 
-    public function getDemo(){
+    // about page of site
+    public function getAbout()
+    {
+        return View::make('pages.about')
+            ->with('title', Lang::get('home.about'));            
+    }
+
+    // a test page of site
+    public function getDemo()
+    {
+        $hosts = Host::all();
+        Host::refreshStatus($hosts);
     }
 }

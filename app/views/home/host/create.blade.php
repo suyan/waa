@@ -5,9 +5,6 @@
 <hr>
 <div class="col-md-12">
   {{ Form::open(array('url' => 'home/host/create', 'files' => true, 'id' => 'login', 'class' => 'form-horizontal')) }}
-    @if (isset($error))
-      <p class="bg-danger">$error</p>    
-    @endif
     <div class="form-group {{ $errors->get('hostname') ? 'has-error' : '' }}">
       <label for="hostname" class="col-md-2 control-label">@lang('host.hostname')</label>
       <div class="col-md-10">

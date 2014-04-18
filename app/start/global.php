@@ -85,4 +85,4 @@ require app_path().'/filters.php';
 
 require app_path().'/start/events.php';
 
-require app_path().'/start/validates.php';
+// require app_path().'/start/validates.php';

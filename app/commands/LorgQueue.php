@@ -3,7 +3,7 @@
 * @Author: Su Yan <http://yansu.org>
 * @Date:   2014-03-20 09:53:53
 * @Last Modified by:   Su Yan
-* @Last Modified time: 2014-04-14 09:44:52
+* @Last Modified time: 2014-04-17 10:37:00
 */
 class LorgQueue
 {
@@ -15,6 +15,7 @@ class LorgQueue
         $host_id = $data['host_id'];
         $host = Host::find($host_id);
         $host->status = 2;
+        $host->pid = posix_getpid();
         $host->start_time = date('Y-m-d H:i:s', time());
         $host->save();
         

@@ -3,7 +3,7 @@
  * @Author: Su Yan <http://yansu.org>
  * @Date:   2014-03-18 11:04:30
  * @Last Modified by:   Su Yan
- * @Last Modified time: 2014-04-16 21:34:50
+ * @Last Modified time: 2014-04-18 22:54:54
 */
 
 class HomeHostController extends HomeController
@@ -32,11 +32,54 @@ class HomeHostController extends HomeController
         $this->leftNav['host']['class'] = 'active';
         
         $hosts = Host::where('user_id', Auth::user()->id)->paginate(Config::get('waa.paginate'));
+        Host::refreshStatus($hosts);
 
         return View::make('home.host.host')
             ->with('leftNav', $this->leftNav)
             ->with('title', Lang::get('host.host'))
             ->with('hosts', $hosts);
+    }
+
+    /**
+     * 由Ajax调用，获得指定主机的状态
+     * @param  string $ids 类似"1,2,3,5"字符串，用户的一系列主机id
+     * @return json   主机数组，数据内是主机对象{id:xxx,process:xxx,status:xxx}
+     */
+    public function getHostByIds($ids)
+    {
+        if (Request::ajax()) {
+            $response = array(
+                'code' => '0',
+                'hosts' => array()
+                );
+            // 数据为空直接返回
+            if(empty($ids)) return Response::json($response);
+            
+            $ids = explode(',', $ids);
+            if (is_array($ids)) {
+                // 获得所需的主机
+                $hosts = DB::table('hosts')
+                    ->select('id','process','log','status','pid')
+                    ->where('user_id', Auth::user()->id)
+                    ->whereIn('id', $ids)
+                    ->get();
+
+                Host::refreshStatus($hosts);
+
+                // 删除不必要的字段
+                array_walk($hosts, function(&$value, $key){
+                    unset($value->pid);
+                });
+
+                $response['code'] = 1;
+                $response['hosts'] = $hosts;
+                return Response::json($response);
+            } else {
+                return Response::json($response);    
+            }
+            
+        }
+        return Redirect::to('home/host/host');
     }
     
     public function getCreate()
@@ -61,7 +104,7 @@ class HomeHostController extends HomeController
             $errors = $host->errors();
             if (isset($uploadfile)) $errors->add('uploadfile', $uploadfile);
             
-            return Redirect::to('home/host/create')->withErrors($errors);
+            return Redirect::to('home/host/create')->with('errors', $errors);
         }
         
         $file = Input::file('uploadfile');
@@ -85,6 +128,10 @@ class HomeHostController extends HomeController
             ->with('host', $host);
     }
 
+    /**
+     * 删除整个主机，包括主机host条目以及相应的vector分析结果
+     * @param  int $host host的id
+     */
     public function postDelete($host)
     {
         // 判断是否是主机主人

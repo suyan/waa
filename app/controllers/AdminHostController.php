@@ -3,7 +3,7 @@
 * @Author: Su Yan <http://yansu.org>
 * @Date:   2014-03-25 20:14:35
 * @Last Modified by:   Su Yan
-* @Last Modified time: 2014-04-03 11:05:47
+* @Last Modified time: 2014-04-17 10:43:52
 */
 class AdminHostController extends AdminController
 {
@@ -26,16 +26,19 @@ class AdminHostController extends AdminController
         );
     }
 
+    // get list of hosts
     public function getHost(){
         $this->leftNav['host']['class'] = 'active';
 
         $hosts = Host::paginate(Config::get('waa.paginate'));
+
         return View::make('admin.host.host')
             ->with('title', Lang::get('admin.host'))
             ->with('leftNav', $this->leftNav)
             ->with('hosts', $hosts);
     }
 
+    // 确认删除
     public function getDelete($host)
     {
         $this->leftNav['host']['class'] = 'active';
@@ -46,6 +49,7 @@ class AdminHostController extends AdminController
             ->with('host', $host);
     }
 
+    // 执行删除
     public function postDelete($host)
     {
         $host = Host::find($host);
@@ -56,6 +60,7 @@ class AdminHostController extends AdminController
         return Redirect::to('admin/host');
     }
 
+    // 确认执行检测
     public function getRun($host)
     {
         $this->leftNav['host']['class'] = 'active';
@@ -65,6 +70,7 @@ class AdminHostController extends AdminController
             ->with('host', $host);
     }
 
+    // 执行任务
     public function postRun($host)
     {
         $host = Host::find($host);
@@ -75,7 +81,9 @@ class AdminHostController extends AdminController
         return Redirect::to('host/host');
     }
 
-    public function getInfo($host){
+    // 获得主机信息
+    public function getInfo($host)
+    {
         $this->leftNav['host']['class'] = 'active';
 
         $host = DB::table('hosts')->where('id', $host)->first();
@@ -162,6 +170,7 @@ class AdminHostController extends AdminController
             ->with('clientImpactRate', json_encode($clientImpactRate));
     }
 
+    // 获得所有攻击向量
     public function getVector($host){
         $this->leftNav['host']['class'] = 'active';
 

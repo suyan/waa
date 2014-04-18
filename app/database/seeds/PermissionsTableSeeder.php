@@ -10,8 +10,18 @@ class PermissionsTableSeeder extends Seeder {
 		DB::table('permissions')->delete();
 
         $permissions = array(
-            array('name' => 'manage_users','display_name'      => 'manage users'),
-            array('name' => 'manage_roles','display_name'      => 'manage roles'),
+            array(
+                'name'         => 'manage_users',
+                'display_name' => 'manage users',
+                'created_at'   => date('Y-m-d H:i:s', time()),
+                'updated_at'   => date('Y-m-d H:i:s', time()),
+                ),
+            array(
+                'name'         => 'manage_roles',
+                'display_name' => 'manage roles',
+                'created_at'   => date('Y-m-d H:i:s', time()),
+                'updated_at'   => date('Y-m-d H:i:s', time()),
+                ),
         );
 
         DB::table('permissions')->insert( $permissions );
