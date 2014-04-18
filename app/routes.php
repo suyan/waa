@@ -45,6 +45,7 @@ Route::group(array('prefix'=>'user'), function(){
 Route::group(array('prefix'=>'admin'), function(){
     Route::get('/', 'AdminSumController@getSum');
     Route::get('host', 'AdminHostController@getHost');
+    Route::get('host/{ids}/host', 'AdminHostController@getHostByIds');
     Route::get('host/{host}/delete', 'AdminHostController@getDelete');
     Route::post('host/{host}/delete', 'AdminHostController@postDelete');
     Route::get('host/{host}/run', 'AdminHostController@getRun');

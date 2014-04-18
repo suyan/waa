@@ -34,7 +34,6 @@ class WaaController extends BaseController
     // a test page of site
     public function getDemo()
     {
-        $hosts = Host::all();
-        Host::refreshStatus($hosts);
+
     }
 }
