@@ -47,8 +47,7 @@ return array(
 		'Illuminate\View\ViewServiceProvider',
 		'Illuminate\Workbench\WorkbenchServiceProvider',
 
-		// Additional provider
-		'Way\Generators\GeneratorsServiceProvider',
+		// Additional provider,
 		// 'Suyan\Lorg\LorgServiceProvider',
 		'Zizaco\Confide\ConfideServiceProvider',
 		'Zizaco\Entrust\EntrustServiceProvider',

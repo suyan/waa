@@ -5,7 +5,6 @@
     "license": "MIT",
     "require": {
         "laravel/framework": "4.1.*",
-        "way/generators": "2.*",
         "geoip2/geoip2": "0.6.*",
         "phpids/phpids": "dev-master",
         "ezyang/htmlpurifier": "dev-master",
