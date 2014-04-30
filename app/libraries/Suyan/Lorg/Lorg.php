@@ -3,7 +3,7 @@
 * @Author: Su Yan <http://yansu.org>
 * @Date:   2014-01-17 22:36:34
 * @Last Modified by:   Su Yan
-* @Last Modified time: 2014-04-03 10:26:08
+* @Last Modified time: 2014-04-30 10:03:04
 */
 namespace Suyan\Lorg;
 class Lorg{
@@ -18,23 +18,32 @@ class Lorg{
 
     public $impactCount = 0;
 
+    /**
+     * 初始化LORG类
+     * @param string $config 配置文件的类型
+     * @param string $source 配置文件位置
+     */
     public function __construct($config = 'File', $source = 'Suyan/Lorg/Data/config.php'){   
         $this->config = new Config\Config($config);
         $this->config->init($source);
     }
 
+    /**
+     * 初始化一些必要的类
+     */
     public function initHelper(){
-        $input_opts = $this->config->get('input');
-        $this->input = new Input\Input($input_opts['default']);
-        $this->input->init($input_opts[$input_opts['default']]);
 
+        // 初始化输入方式
+        $this->input = new Input\Input($this->config->get('input'));
+
+        // 初始化输出部分
         $output_opts = $this->config->get('output');
-        $this->output = new Output\Output($output_opts['default']);
-        $this->output->init($output_opts[$output_opts['default']]);
+        $this->output = new Output\Output($output_opts['type']);
+        $this->output->init($output_opts[$output_opts['type']]);
 
         $log_opts = $this->config->get('log');
-        $this->log = new Log\Log($log_opts['default']);
-        $this->log->init($log_opts[$log_opts['default']]);
+        $this->log = new Log\Log($log_opts['type']);
+        $this->log->init($log_opts[$log_opts['type']]);
 
         // 初始化需要负责检测的类
         $this->phpids = new Core\PHPIDS($this->config->get('phpids'),$this->log);
@@ -47,6 +56,9 @@ class Lorg{
         $this->anomaly = new Core\Anomaly($this->config->get('anomaly'), $this->log);
     }
 
+    /**
+     * 由run函数来操控如何去检测这个系统
+     */
     function run(){
         $this->initHelper();
         // 开始运行

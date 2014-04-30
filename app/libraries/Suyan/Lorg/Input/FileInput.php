@@ -3,7 +3,7 @@
 * @Author: Su Yan <http://yansu.org>
 * @Date:   2014-03-22 18:37:19
 * @Last Modified by:   Su Yan
-* @Last Modified time: 2014-03-22 22:40:13
+* @Last Modified time: 2014-04-30 09:49:23
 */
 namespace Suyan\Lorg\Input;
 
@@ -12,7 +12,7 @@ class FileInput implements InputInterface {
     protected $fileName;
     protected $inputStream;
 
-    public function init($source = ''){
+    public function __construct($source = ''){
         if(file_exists($source))
             $this->fileName = $source;
         else 
