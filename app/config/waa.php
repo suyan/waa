@@ -11,6 +11,10 @@ return array(
         'group' => 'waaQueue'
         ),
     // lorg settings
+    'config' => array(
+        'type' => 'Laravel',
+        'Laravel' => 'waa'
+        ),
     'log' => array(
         'type' => 'Terminal',
         'Terminal' => ''

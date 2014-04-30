@@ -3,7 +3,7 @@
 * @Author: Su Yan <http://yansu.org>
 * @Date:   2014-03-22 18:37:19
 * @Last Modified by:   Su Yan
-* @Last Modified time: 2014-03-31 16:43:29
+* @Last Modified time: 2014-04-30 10:23:20
 */
 namespace Suyan\Lorg\Config;
 
@@ -12,7 +12,7 @@ class LaravelConfig implements ConfigInterface {
     protected $configName;
     protected $configs;
 
-    public function init($source = ''){
+    public function __construct($source = ''){
         $this->configName = $source;
         // 读取文件中的配置
         // $this->configs = require($this->fileName);

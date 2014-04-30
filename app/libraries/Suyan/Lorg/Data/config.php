@@ -1,5 +1,9 @@
 <?php
 return array(
+    'config' => array(
+        'type' => 'File',
+        'File' => 'Suyan/Lorg/Data/config.php'
+        ),
     'log' => array(
         'type' => 'Terminal',
         'Terminal' => ''

@@ -3,7 +3,7 @@
 * @Author: Su Yan <http://yansu.org>
 * @Date:   2014-01-17 22:36:34
 * @Last Modified by:   Su Yan
-* @Last Modified time: 2014-04-30 10:03:04
+* @Last Modified time: 2014-04-30 10:32:21
 */
 namespace Suyan\Lorg;
 class Lorg{
@@ -20,12 +20,9 @@ class Lorg{
 
     /**
      * 初始化LORG类
-     * @param string $config 配置文件的类型
-     * @param string $source 配置文件位置
      */
-    public function __construct($config = 'File', $source = 'Suyan/Lorg/Data/config.php'){   
-        $this->config = new Config\Config($config);
-        $this->config->init($source);
+    public function __construct($opts){   
+        $this->config = new Config\Config($opts);
     }
 
     /**

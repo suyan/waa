@@ -3,7 +3,7 @@
 * @Author: Su Yan <http://yansu.org>
 * @Date:   2014-03-22 18:37:19
 * @Last Modified by:   Su Yan
-* @Last Modified time: 2014-03-31 15:23:09
+* @Last Modified time: 2014-04-30 10:22:28
 */
 namespace Suyan\Lorg\Config;
 
@@ -12,7 +12,7 @@ class FileConfig implements ConfigInterface {
     protected $fileName;
     protected $configs;
 
-    public function init($source = ''){
+    public function __construct($source = ''){
         if(file_exists($source))
             $this->fileName = $source;
         else 
@@ -22,7 +22,6 @@ class FileConfig implements ConfigInterface {
             throw new \Exception('config '.$source.' is not readable!');
         // 读取文件中的配置
         $this->configs = require($this->fileName);
-
     }
 
     public function get($name, $default = ''){

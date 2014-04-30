@@ -3,7 +3,7 @@
 * @Author: Su Yan <http://yansu.org>
 * @Date:   2014-03-22 18:35:57
 * @Last Modified by:   Su Yan
-* @Last Modified time: 2014-04-30 10:02:47
+* @Last Modified time: 2014-04-30 10:37:04
 */
 namespace Suyan\Lorg\Input;
 
@@ -17,7 +17,7 @@ class Input implements InputInterface
 
         // 检查输入类型
         if (!isset($opts['type'])) 
-            throw new Exception("invalid opts of input");        
+            throw new Exception("invalid opts of input");
         $input = 'Suyan\Lorg\Input\\'.$type.'Input';
 
         if (!class_exists($input)) 

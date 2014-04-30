@@ -15,7 +15,7 @@ class LorgCommand extends Command {
     {
         $this->info('开始分析');
         // 以Laravel格式获得配置文件，配置文件在waa中
-        $lorg = new Suyan\Lorg\Lorg('Laravel', 'waa');
+        $lorg = new Suyan\Lorg\Lorg(Config::get('waa.config'));
 
         // 输入方式，从文件输入
         $lorg->config->set('input', array(
