@@ -1,14 +1,4 @@
 <?php
-/* 
-* @Author: Su Yan <http://yansu.org>
-* @Date:   2014-03-22 18:35:57
-* @Last Modified by:   Su Yan
-<<<<<<< HEAD
-* @Last Modified time: 2014-04-30 10:46:43
-=======
-* @Last Modified time: 2014-04-30 10:40:03
->>>>>>> develop
-*/
 namespace Suyan\Lorg\Input;
 
 /**
