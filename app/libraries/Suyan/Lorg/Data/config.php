@@ -1,15 +1,15 @@
 <?php
 return array(
     'log' => array(
-        'default' => 'Terminal',
+        'type' => 'Terminal',
         'Terminal' => ''
         ),
     'input' => array(
-        'default' => 'File',
+        'type' => 'File',
         'File' => app_path().'/libraries/Suyan/Lorg/Data/log_test'
         ),
     'output' => array(
-        'default' => 'Terminal',
+        'type' => 'Terminal',
         'Terminal' => ''
         ),
     'detect' => array(
