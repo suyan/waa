@@ -3,7 +3,7 @@
 * @Author: Su Yan <http://yansu.org>
 * @Date:   2014-03-20 09:53:53
 * @Last Modified by:   Su Yan
-* @Last Modified time: 2014-04-17 10:37:00
+* @Last Modified time: 2014-04-29 11:04:56
 */
 class LorgQueue
 {
@@ -26,12 +26,12 @@ class LorgQueue
         $lorg = new Suyan\Lorg\Lorg('Laravel', 'waa');
 
         $lorg->config->set('input', array(
-            'default'=>'File', 
+            'type'=>'File', 
             'File'=>app_path().'/storage/upload/'.$host->file_name
             ));
 
         $lorg->config->set('output', array(
-            'default'=>'Laravel', 
+            'type'=>'Laravel', 
             'Laravel'=> array(
                 'vector_db' => DB::table('vectors'),
                 'host_db' => DB::table('hosts'),
@@ -39,7 +39,7 @@ class LorgQueue
             )));
 
         $lorg->config->set('log', array(
-            'default'=>'Laravel',
+            'type'=>'Laravel',
             'Laravel' => array(
                 'host_db' => DB::table('hosts'),
                 'host_id' => $host->id
